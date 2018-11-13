@@ -1,14 +1,24 @@
-<div class="holder">
-  <div class="holder-item">
-    <app-device-wrapper device="macbook" [handlerId]="handlerIdOne">
-      <app-compare [handlerId]="handlerIdOne"></app-compare>
-    </app-device-wrapper>
-  </div>
-</div>
-<div class="holder">
-    <div class="holder-item">
-      <app-device-wrapper device="ipad landscape" [handlerId]="handlerIdTwo">
-        <app-compare [handlerId]="handlerIdTwo"></app-compare>
-      </app-device-wrapper>
+<div class="holder-wrapper">
+  <div class="holder-item-wrapper" *ngIf="selectedDevice === 'macbook'">
+    <div class="holder">
+      <div class="holder-item">
+        <app-device-wrapper device="macbook" [handlerId]="handlerIdOne">
+          <app-compare [handlerId]="handlerIdOne"></app-compare>
+        </app-device-wrapper>
+      </div>
     </div>
   </div>
+  <div class="holder-item-wrapper" *ngIf="selectedDevice === 'ipad'">
+    <div class="holder">
+      <div class="holder-item">
+        <app-device-wrapper device="ipad landscape" [handlerId]="handlerIdTwo">
+          <app-compare [handlerId]="handlerIdTwo"></app-compare>
+        </app-device-wrapper>
+      </div>
+    </div>
+  </div>
+  <div class="toggle-bar">
+    <button (click)="toggleSkin()">Show <span *ngIf="selectedDevice !== 'macbook'">Macbook</span><span *ngIf="selectedDevice !== 'ipad'">IPAD</span>
+      skin</button>
+  </div>
+</div>

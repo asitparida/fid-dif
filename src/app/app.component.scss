@@ -1,3 +1,18 @@
+.holder-wrapper {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+.holder-item-wrapper {
+    width: 100%;
+    height: calc(100% - 120px);
+    position: absolute;
+    top:0 ;
+    left: 0;
+    animation: fade-in 0.3s ease-out forwards 0s;
+    transform-style: preserve-3d;
+}
 .holder {
     width: 100vw;
     height: 100vh;
@@ -8,5 +23,46 @@
         display: flex;
         width: 100%;
         justify-content: center;
+    }
+}
+.toggle-bar {
+    width: 100%;
+    bottom:0;
+    left:0;
+    height: 120px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+button {
+    height: 48px;
+    border: 2px  solid rgba(#333, 1);
+    color: rgba(#333, 1);
+    line-height: 44px;
+    padding: 0 15px;
+    text-align: center;
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: medium;
+    cursor: pointer;
+    outline: none;
+    &:hover {
+        background: rgba(#333, 1);
+        color: #fff;
+    }
+}
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: scale3d(1, 1, 1);
+    }
+    10% {
+        opacity: 0;
+            transform: scale3d(0.90, 0.90, 0.90);
+    }
+    100% {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
     }
 }
