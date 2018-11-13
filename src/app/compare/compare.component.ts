@@ -23,6 +23,7 @@ export class CompareComponent implements AfterViewInit {
   private xPosition = 0;
   private left = 0;
   private right = 0;
+  
 
   constructor() { }
 
