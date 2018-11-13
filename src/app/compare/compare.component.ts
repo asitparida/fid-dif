@@ -13,14 +13,13 @@ export class CompareComponent implements AfterViewInit {
   @ViewChild('wrapper') wrapperRef: ElementRef;
   @ViewChild('dragHandler') dragHandlerRef: ElementRef;
   @Input() handlerId;
-
+  capturing =  false;
   private firstImageWrapper;
   private secondImageWrapper;
   private handler;
   private wrapper;
   private dragHandler;
   private rectProps: ClientRect;
-  private capturing =  false;
   private xPosition = 0;
   private left = 0;
   private right = 0;
