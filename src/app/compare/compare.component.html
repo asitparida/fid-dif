@@ -1,0 +1,17 @@
+<div class="image-wrapper-outer">
+  <div class="wrapper">
+    <div class="image-wrapper-holder" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseOut()" (mousedown)="onMouseDown()"
+      (mouseup)="onMouseUp()" #wrapper>
+      <div class="image-wrapper first" #first>
+        <div class="image" style="background-image:url('assets/source.jpg')"></div>
+      </div>
+      <div class="image-wrapper second" #second>
+        <div class="image" style="background-image:url('assets/target.jpg')"></div>
+      </div>
+      <div class="image-slider" [class.active]="capturing" #handler></div>
+      <div class="pan-handler" #dragHandler>
+        <i class="material-icons">drag_indicator</i>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'diff-fi';
+  handlerIdOne = 'handler_' + Math.floor(Math.random() * 10e6);
+  handlerIdTwo = 'handler_' + Math.floor(Math.random() * 10e6);
 }
