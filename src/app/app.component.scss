@@ -6,7 +6,7 @@
 }
 .holder-item-wrapper {
     width: 100%;
-    height: calc(100% - 120px);
+    height: 100%;
     position: absolute;
     top:0 ;
     left: 0;
@@ -15,7 +15,7 @@
 }
 .holder {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,11 +25,19 @@
         justify-content: center;
     }
 }
+.full-wrapper {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
 .toggle-bar {
     width: 100%;
     bottom:0;
     left:0;
-    height: 120px;
+    height: 60px;
     position: absolute;
     display: flex;
     justify-content: center;

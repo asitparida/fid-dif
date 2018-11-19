@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Input } from '@angular/core';
 import { BunBunStates } from '../states';
-import { stat } from 'fs';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-compare',
@@ -15,7 +15,8 @@ export class CompareComponent implements AfterViewInit, OnInit {
   @ViewChild('wrapper') wrapperRef: ElementRef;
   @ViewChild('dragHandler') dragHandlerRef: ElementRef;
   @Input() handlerId;
-  capturing = false;
+  mouseEventCapturing = false;
+  panEventCapturing = false;
   private firstImageWrapper;
   private secondImageWrapper;
   private handler;
@@ -26,7 +27,7 @@ export class CompareComponent implements AfterViewInit, OnInit {
   private right = 0;
   private state: any = BunBunStates[0];
 
-  constructor() { }
+  constructor(private appService: AppService) { }
 
   ngOnInit() {
     this.state.leftPage.markers.forEach(mark => {
@@ -72,6 +73,19 @@ export class CompareComponent implements AfterViewInit, OnInit {
     this.handler = this.handlerRef.nativeElement;
     this.wrapper = this.wrapperRef.nativeElement;
     this.dragHandler = this.dragHandlerRef.nativeElement;
+    const isDeviceWrapperShown = this.appService.showDeviceMock();
+    if (!isDeviceWrapperShown) {
+      const wrapperWidth = window.innerWidth;
+      const wrapperHeight = wrapperWidth * this.appService.RATIO;
+      (this.wrapper as HTMLElement).style.height = wrapperHeight + 'px';
+      (this.wrapper as HTMLElement).style.width = wrapperWidth + 'px';
+    }
+    setTimeout(() => {
+      this.initer();
+    });
+  }
+
+  initer() {
     this.rectProps = (this.wrapper as HTMLElement).getBoundingClientRect();
     this.left = this.rectProps.left;
     const width = this.rectProps.width;
@@ -120,37 +134,57 @@ export class CompareComponent implements AfterViewInit, OnInit {
   }
 
   onMouseMove(e: MouseEvent) {
-    if (this.capturing) {
+    if (this.mouseEventCapturing) {
       window.requestAnimationFrame(() => {
-        let clientX = e.clientX;
-        clientX = clientX < this.left ? this.left : clientX;
-        clientX = clientX > this.rectProps.width ? this.rectProps.width : clientX;
-        let position = e.clientX - this.left;
-        position = position < 0 ? 0 : position;
-        position = position > this.rectProps.width ? this.rectProps.width : position;
-        (this.handler as HTMLElement).style.left = `${position}px`;
-        (this.dragHandler as HTMLElement).style.left = `${position}px`;
-        const firstImageWrapperWidth = position;
-        (this.firstImageWrapper as HTMLElement).style.width = `${firstImageWrapperWidth}px`;
-        position = this.right - e.clientX;
-        position = position < 0 ? 0 : position;
-        position = position > this.rectProps.width ? this.rectProps.width : position;
-        const secondImageWrapperWidth = position;
-        (this.secondImageWrapper as HTMLElement).style.width = `${secondImageWrapperWidth}px`;
+        this.process(e.clientX);
       });
     }
   }
 
+  process(eventCientX) {
+    let clientX = eventCientX;
+    clientX = clientX < this.left ? this.left : clientX;
+    clientX = clientX > this.rectProps.width ? this.rectProps.width : clientX;
+    let position = eventCientX - this.left;
+    position = position < 0 ? 0 : position;
+    position = position > this.rectProps.width ? this.rectProps.width : position;
+    (this.handler as HTMLElement).style.left = `${position}px`;
+    (this.dragHandler as HTMLElement).style.left = `${position}px`;
+    const firstImageWrapperWidth = position;
+    (this.firstImageWrapper as HTMLElement).style.width = `${firstImageWrapperWidth}px`;
+    position = this.right - eventCientX;
+    position = position < 0 ? 0 : position;
+    position = position > this.rectProps.width ? this.rectProps.width : position;
+    const secondImageWrapperWidth = position;
+    (this.secondImageWrapper as HTMLElement).style.width = `${secondImageWrapperWidth}px`;
+  }
+
   onMouseOut() {
-    this.capturing = false;
+    this.mouseEventCapturing = false;
   }
 
   onMouseDown() {
-    this.capturing = true;
+    this.mouseEventCapturing = true;
   }
 
   onMouseUp() {
-    this.capturing = false;
+    this.mouseEventCapturing = false;
+  }
+
+  onPanMove(e) {
+    if (this.panEventCapturing && !this.mouseEventCapturing) {
+      window.requestAnimationFrame(() => {
+        this.process(e.center.x);
+      });
+    }
+  }
+
+  onPanStart() {
+    this.panEventCapturing = true;
+  }
+
+  onPanEnd() {
+    this.panEventCapturing = false;
   }
 
 }

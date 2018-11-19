@@ -1,6 +1,6 @@
 <div class="image-wrapper-outer" (click)="onWrapperClick($event)">
   <div class="wrapper">
-    <div class="image-wrapper-holder" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseOut()" (mousedown)="onMouseDown()"
+    <div class="image-wrapper-holder" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseOut()" (mousedown)="onMouseDown()" (panstart)="onPanStart($event)" (panend)="onPanEnd()" (panmove)="onPanMove($event)"
       (mouseup)="onMouseUp()" #wrapper>
       <div class="image-wrapper first" #first>
         <div class="image" [style.backgroundImage]="state?.leftPage?.url">
@@ -12,7 +12,7 @@
           <div class="image-marker" *ngFor="let marker of state?.rightPage?.markers" (click)="onMarkActivate(marker)" [style.right]="marker.right + 'px'" [style.top]="marker.top + 'px'" [style.width]="marker.width + 'px'" [style.height]="marker.height + 'px'"></div>
         </div>
       </div>
-      <div class="image-slider" [class.active]="capturing" #handler></div>
+      <div class="image-slider" [class.active]="mouseEventCapturing" #handler></div>
       <div class="pan-handler" #dragHandler>
         <i class="material-icons">drag_indicator</i>
       </div>
