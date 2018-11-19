@@ -1,6 +1,6 @@
-<div class="image-wrapper-outer" (click)="onWrapperClick($event)">
+<div class="image-wrapper-outer" (click)="onWrapperClick()">
   <div class="wrapper">
-    <div class="image-wrapper-holder" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseOut()" (mousedown)="onMouseDown()" (panstart)="onPanStart($event)" (panend)="onPanEnd()" (panmove)="onPanMove($event)"
+    <div class="image-wrapper-holder" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseOut()" (mousedown)="onMouseDown()" (panstart)="onPanStart()" (panend)="onPanEnd()" (panmove)="onPanMove($event)"
       (mouseup)="onMouseUp()" #wrapper>
       <div class="image-wrapper first" #first>
         <div class="image" [style.backgroundImage]="state?.leftPage?.url">

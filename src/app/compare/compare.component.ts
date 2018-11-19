@@ -25,7 +25,7 @@ export class CompareComponent implements AfterViewInit, OnInit {
   private rectProps: ClientRect;
   private left = 0;
   private right = 0;
-  private state: any = BunBunStates[0];
+  state: any = BunBunStates[0];
 
   constructor(private appService: AppService) { }
 
