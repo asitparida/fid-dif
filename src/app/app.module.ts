@@ -8,6 +8,9 @@ import { DeviceWrapperComponent } from './device-wrapper/device-wrapper.componen
 import * as Hammer from 'hammerjs';
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { AppService } from './app.service';
+import { AuthoringComponent } from './authoring/authoring.component';
+import { PreviewComponent } from './preview/preview.component';
+import { AppRoutingModule } from './app.routing';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
@@ -20,10 +23,13 @@ export class MyHammerConfig extends HammerGestureConfig {
   declarations: [
     AppComponent,
     CompareComponent,
-    DeviceWrapperComponent
+    DeviceWrapperComponent,
+    AuthoringComponent,
+    PreviewComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [{
     provide: HAMMER_GESTURE_CONFIG,

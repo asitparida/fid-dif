@@ -1,0 +1,15 @@
+<div class="authoring-view">
+  <div class="authoring-container">
+    <div class="authoring-left">
+      <div class="authoring-image-item" *ngFor="let image of leftFidelityCollection">
+        <div class="image" [style.backgroundImage]="image.imgSrc"></div>
+      </div>
+    </div>
+    <div class="authoring-right">
+      <div class="authoring-image-item" *ngFor="let image of rightFidelityCollection">
+        <div class="image" [style.backgroundImage]="image.imgSrc"></div>
+      </div>
+    </div>
+    <div class="authoring-main"></div>
+  </div>
+</div>

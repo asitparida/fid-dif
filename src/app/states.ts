@@ -7,10 +7,10 @@ export const BunBunStates = [
             markers: [
                 {
                     id: '1',
-                    top: 374,
-                    left: 327,
-                    width: 150,
-                    height: 80,
+                    top: 63,
+                    left: 41,
+                    width: 20.5,
+                    height: 13,
                     targetState: 'DETAILS_LIST'
                 }
             ]
@@ -21,10 +21,10 @@ export const BunBunStates = [
             markers: [
                 {
                     id: '1',
-                    top: 320,
-                    right: 324,
-                    width: 150,
-                    height: 80,
+                    top: 53,
+                    right: 59.52,
+                    width: 19,
+                    height: 14,
                     targetState: 'DETAILS_LIST'
                 }
             ]

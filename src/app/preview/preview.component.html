@@ -1,0 +1,27 @@
+<div class="holder-wrapper">
+  <ng-container *ngIf="!showFullWrapper">
+    <div class="holder-item-wrapper" *ngIf="selectedDevice === 'macbook'">
+      <div class="holder">
+        <div class="holder-item">
+          <app-device-wrapper device="macbook" [handlerId]="handlerIdOne">
+            <app-compare [handlerId]="handlerIdOne"></app-compare>
+          </app-device-wrapper>
+        </div>
+      </div>
+    </div>
+    <div class="holder-item-wrapper" *ngIf="selectedDevice === 'ipad'">
+      <div class="holder">
+        <div class="holder-item">
+          <app-device-wrapper device="ipad landscape" [handlerId]="handlerIdTwo">
+            <app-compare [handlerId]="handlerIdTwo"></app-compare>
+          </app-device-wrapper>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="full-wrapper" *ngIf="showFullWrapper">
+    <div class="full-wrapper-content">
+      <app-compare [handlerId]="handlerIdTwo"></app-compare>
+    </div>
+  </div>
+</div>
