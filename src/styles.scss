@@ -21,3 +21,8 @@ body {
     background-color: rgba(0,0,0,.15);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.75);
   }
+  .clearfix:after {
+      content: '';
+      display: table-cell;
+      clear: both;
+  }

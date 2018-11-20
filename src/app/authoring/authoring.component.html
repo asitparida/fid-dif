@@ -1,15 +1,20 @@
 <div class="authoring-view">
   <div class="authoring-container">
     <div class="authoring-left">
-      <div class="authoring-image-item" *ngFor="let image of leftFidelityCollection">
-        <div class="image" [style.backgroundImage]="image.imgSrc"></div>
+      <div class="authoring-image-item" *ngFor="let image of fidelityCollection">
+        <div class="left">
+            <div class="image" [style.backgroundImage]="image.leftImgSrc"></div>
+        </div>
+        <div class="right">
+            <div class="image" [style.backgroundImage]="image.rightImgSrc"></div>
+        </div>
+        <div class="clearfix"></div>
       </div>
     </div>
-    <div class="authoring-right">
-      <div class="authoring-image-item" *ngFor="let image of rightFidelityCollection">
-        <div class="image" [style.backgroundImage]="image.imgSrc"></div>
-      </div>
+    <div class="authoring-main">
+      <app-device-wrapper device="ipad landscape" [handlerId]="handlerId">
+        <app-builder [handlerId]="handlerId"></app-builder>
+      </app-device-wrapper>
     </div>
-    <div class="authoring-main"></div>
   </div>
 </div>

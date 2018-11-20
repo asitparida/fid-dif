@@ -1,0 +1,42 @@
+.box {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: 2px dashed #000;
+    color: white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index: 2;
+}
+
+.handle {
+    background-color: #727272;
+    width: 10px;
+    height: 10px;
+    cursor: se-resize;
+    position:absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+}
+.mover {
+    cursor: move;
+    width: 18px;
+    height: 18px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    position: relative;
+    z-index: 3;
+    &:before {
+        width: 30px;
+        height: 30px;
+        border: 2px solid rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        position: relative;
+        top: -8px;
+        left: -8px;
+        content: '';
+        display: block;
+    }
+}
