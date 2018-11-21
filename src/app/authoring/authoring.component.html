@@ -1,19 +1,49 @@
 <div class="authoring-view">
   <div class="authoring-container">
-    <div class="authoring-left">
-      <div class="authoring-image-item" *ngFor="let image of fidelityCollection">
-        <div class="left">
-            <div class="image" [style.backgroundImage]="image.leftImgSrc"></div>
+    <div class="authoring-items-wrapper">
+      <div class="authoring-items-header">
+        <div class="action">
+          <i class="material-icons">add_box</i>
         </div>
-        <div class="right">
-            <div class="image" [style.backgroundImage]="image.rightImgSrc"></div>
+        <div class="action" style="margin-left: auto" (click)="downloadConfig()">
+          <i class="material-icons">cloud_download</i>
         </div>
-        <div class="clearfix"></div>
+      </div>
+      <div class="authoring-items-holder">
+        <div class="authoring-image-item" *ngFor="let state of fidelityStates; let i = index" (click)="activateState(i)"
+          [class.active]="activeIndex === i">
+          <div class="active-index">State {{i + 1}}</div>
+          <div class="state-details">
+            <label class="state-label">Title</label>
+            <input [(ngModel)]="state.title" placeholder="Add a title for the state" [name]="'name' + i" />
+          </div>
+          <div class="left">
+            <label class="state-label">Left Image</label>
+            <div class="image" [style.backgroundImage]="state?.leftPage?.imgSrc"></div>
+            <label class="state-label" style="margin-top: 15px">Left Markers</label>
+            <div class="marker" *ngFor="let marker of state?.leftPage?.markers; let i = index">
+              <select [(ngModel)]="marker.targetState" [name]="'ls_' + i" [attr.id]="'lsid_' + i">
+                <option *ngFor="let target of fidelityStates" [value]="target.state">{{target.title}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="right">
+            <label class="state-label">Right Image</label>
+            <div class="image" [style.backgroundImage]="state?.rightPage?.imgSrc"></div>
+            <label class="state-label" style="margin-top: 15px">Right Markers</label>
+            <div class="marker" *ngFor="let marker of state?.rightPage?.markers; let i = index">
+              <select [(ngModel)]="marker.targetState" [name]="'rs_' + i" [attr.id]="'rsid_' + i">
+                <option *ngFor="let target of fidelityStates" [value]="target.state">{{target.title}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
       </div>
     </div>
     <div class="authoring-main">
-      <app-device-wrapper device="ipad landscape" [handlerId]="handlerId">
-        <app-builder [handlerId]="handlerId"></app-builder>
+      <app-device-wrapper device="ipad landscape" [handlerId]="handlerId" class="zoomed-out">
+        <app-builder (stateChange)="onStateUpdated($event)" [handlerId]="handlerId"></app-builder>
       </app-device-wrapper>
     </div>
   </div>

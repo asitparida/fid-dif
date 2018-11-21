@@ -32,12 +32,6 @@ export class CompareComponent implements AfterViewInit, OnInit {
   constructor(private appService: AppService) { }
 
   ngOnInit() {
-    this.state.leftPage.markers.forEach(mark => {
-      mark.uid = `marker_${Math.floor(Math.random() * 10e6)}`;
-    });
-    this.state.rightPage.markers.forEach(mark => {
-      mark.uid = `marker_${Math.floor(Math.random() * 10e6)}`;
-    });
   }
   loadImages() {
     const leftImg = document.createElement('img');
@@ -69,8 +63,13 @@ export class CompareComponent implements AfterViewInit, OnInit {
   }
 
   processMarkers() {
+    this.state.leftPage.markers.forEach(mark => {
+      mark.uid = `marker_${Math.floor(Math.random() * 10e6)}`;
+    });
+    this.state.rightPage.markers.forEach(mark => {
+      mark.uid = `marker_${Math.floor(Math.random() * 10e6)}`;
+    });
     const dimensions: ClientRect = (this.wrapper as HTMLElement).getBoundingClientRect();
-    console.log(dimensions);
     this.state.leftPage.markers.forEach(x => {
       x.leftPosition = `${dimensions.width * (x.left / 100)}px`;
       x.topPosition = `${dimensions.height * (x.top / 100)}px`;
@@ -138,11 +137,11 @@ export class CompareComponent implements AfterViewInit, OnInit {
     const markers = document.querySelectorAll('.image-marker');
     if (markers && markers.length > 0) {
       Array.prototype.slice.call(markers).forEach(mark => {
-        // (mark as any).classList.add('active');
+        (mark as any).classList.add('active');
       });
       setTimeout(() => {
         Array.prototype.slice.call(markers).forEach(mark => {
-          // (mark as any).classList.remove('active');
+          (mark as any).classList.remove('active');
         });
       }, 500);
     }
@@ -154,15 +153,15 @@ export class CompareComponent implements AfterViewInit, OnInit {
       this.state = null;
       let elem = (this.secondImageWrapper as Element).querySelector('.image');
       if (elem) {
-        // elem.classList.remove('active');
+        elem.classList.remove('active');
       }
       elem = (this.firstImageWrapper as Element).querySelector('.image');
       if (elem) {
-        // elem.classList.remove('active');
+        elem.classList.remove('active');
       }
       setTimeout(() => {
         this.state = state;
-        this.ngOnInit();
+        this.processMarkers();
         setTimeout(() => {
           this.loadImages();
         }, 1);

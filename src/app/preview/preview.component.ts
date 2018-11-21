@@ -19,10 +19,10 @@ export class PreviewComponent implements OnInit, AfterViewInit {
   constructor(private appService: AppService) {
   }
   ngOnInit() {
-    this.selectedDevice = null;
+    this.selectedDevice = 'ipad';
     this.showFullWrapper = !this.appService.showDeviceMock();
     if (!this.appService.isIpad()) {
-      this.selectedDevice = 'macbook';
+      this.selectedDevice = 'ipad';
     }
   }
   ngAfterViewInit() {

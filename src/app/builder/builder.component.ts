@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { BunBunStates } from '../states';
 import { AppService } from '../app.service';
+import { BuilderService } from '../builder.service';
 
 @Component({
   selector: 'app-builder',
@@ -15,6 +16,7 @@ export class BuilderComponent implements OnInit, AfterViewInit {
   @ViewChild('dragHandler') dragHandlerRef: ElementRef;
   @ViewChild('contentArea') contentAreaRef: ElementRef;
   @Input() handlerId;
+  @Output() stateChange = new EventEmitter();
   mouseEventCapturing = false;
   panEventCapturing = false;
   private firstImageWrapper;
@@ -26,64 +28,105 @@ export class BuilderComponent implements OnInit, AfterViewInit {
   private rectProps: ClientRect;
   private left = 0;
   private right = 0;
-  state: any = BunBunStates[0];
+  state: any = null;
 
-  constructor(private appService: AppService) { }
+  constructor(
+    private appService: AppService,
+    private builderService: BuilderService
+  ) { }
 
   ngOnInit() {
-    this.state.leftPage.markers.forEach(mark => {
-      mark.uid = `marker_${Math.floor(Math.random() * 10e6)}`;
-    });
-    this.state.rightPage.markers.forEach(mark => {
-      mark.uid = `marker_${Math.floor(Math.random() * 10e6)}`;
+    this.loadMarkers();
+    this.builderService.state$.subscribe((data) => {
+      this.loadState(data);
     });
   }
+  loadMarkers() {
+    if (this.state && this.state.leftPage && this.state.leftPage.markers && this.state.leftPage.markers.length > 0) {
+      this.state.leftPage.markers.forEach(mark => {
+        mark.uid = `marker_${Math.floor(Math.random() * 10e6)}`;
+      });
+    }
+    if (this.state && this.state.rightPage && this.state.rightPage.markers && this.state.rightPage.markers.length > 0) {
+      this.state.rightPage.markers.forEach(mark => {
+        mark.uid = `marker_${Math.floor(Math.random() * 10e6)}`;
+      });
+    }
+  }
+  loadState(state) {
+    if (state) {
+      this.state = null;
+      // let elem = (this.secondImageWrapper as Element).querySelector('.image');
+      // if (elem) {
+      //   elem.classList.remove('active');
+      // }
+      // elem = (this.firstImageWrapper as Element).querySelector('.image');
+      // if (elem) {
+      //   elem.classList.remove('active');
+      // }
+      setTimeout(() => {
+        this.state = state;
+        this.loadMarkers();
+        this.processMarkers();
+        setTimeout(() => {
+          this.loadImages();
+        }, 1);
+      });
+    }
+  }
   loadImages() {
-    const leftImg = document.createElement('img');
-    leftImg.style.opacity = '0';
-    leftImg.src = this.state.leftPage.src;
-    leftImg.onload = () => {
-      (this.state.leftPage as any).url = `url('${this.state.leftPage.src}')`;
-      setTimeout(() => {
-        const elem = (this.firstImageWrapper as Element).querySelector('.image');
-        if (elem) {
-          elem.classList.add('active');
-        }
-        leftImg.remove();
-      }, 16);
-    };
-    const rightImg = document.createElement('img');
-    rightImg.style.opacity = '0';
-    rightImg.src = this.state.rightPage.src;
-    rightImg.onload = () => {
-      (this.state.rightPage as any).url = `url('${this.state.rightPage.src}')`;
-      setTimeout(() => {
-        const elem = (this.secondImageWrapper as Element).querySelector('.image');
-        if (elem) {
-          elem.classList.add('active');
-        }
-        rightImg.remove();
-      }, 16);
-    };
+    if (this.state && this.state.leftPage) {
+      const leftImg = document.createElement('img');
+      leftImg.style.opacity = '0';
+      leftImg.src = this.state.leftPage.src;
+      leftImg.onload = () => {
+        (this.state.leftPage as any).url = `url('${this.state.leftPage.src}')`;
+        setTimeout(() => {
+          const elem = (this.firstImageWrapper as Element).querySelector('.image');
+          if (elem) {
+            elem.classList.add('active');
+          }
+          leftImg.remove();
+        }, 16);
+      };
+    }
+    if (this.state && this.state.rightPage) {
+      const rightImg = document.createElement('img');
+      rightImg.style.opacity = '0';
+      rightImg.src = this.state.rightPage.src;
+      rightImg.onload = () => {
+        (this.state.rightPage as any).url = `url('${this.state.rightPage.src}')`;
+        setTimeout(() => {
+          const elem = (this.secondImageWrapper as Element).querySelector('.image');
+          if (elem) {
+            elem.classList.add('active');
+          }
+          rightImg.remove();
+        }, 16);
+      };
+    }
   }
 
   processMarkers() {
-    const dimensions: ClientRect = (this.wrapper as HTMLElement).getBoundingClientRect();
-    console.log(dimensions);
-    this.state.leftPage.markers.forEach(x => {
-      x.leftPosition = `${dimensions.width * (x.left / 100)}px`;
-      x.topPosition = `${dimensions.height * (x.top / 100)}px`;
-      x.widthPosition = `${dimensions.width * (x.width / 100)}px`;
-      x.heightPosition = `${dimensions.height * (x.height / 100)}px`;
-      x.active = true;
-    });
-    this.state.rightPage.markers.forEach(x => {
-      x.rightPosition = `${dimensions.width * ((100 - x.right) / 100)}px`;
-      x.topPosition = `${dimensions.height * (x.top / 100)}px`;
-      x.widthPosition = `${dimensions.width * (x.width / 100)}px`;
-      x.heightPosition = `${dimensions.height * (x.height / 100)}px`;
-      x.active = true;
-    });
+    // const dimensions: ClientRect = (this.wrapper as HTMLElement).getBoundingClientRect();
+    // if (this.state && this.state.leftPage && this.state.leftPage.markers && this.state.leftPage.markers.length > 0) {
+    //   this.state.leftPage.markers.forEach(x => {
+    //     x.leftPosition = `${dimensions.width * (x.left / 100)}px`;
+    //     x.topPosition = `${dimensions.height * (x.top / 100)}px`;
+    //     x.widthPosition = `${dimensions.width * (x.width / 100)}px`;
+    //     x.heightPosition = `${dimensions.height * (x.height / 100)}px`;
+    //     x.active = true;
+    //   });
+    // }
+    // if (this.state && this.state.rightPage && this.state.rightPage.markers && this.state.rightPage.markers.length > 0) {
+    //   this.state.rightPage.markers.forEach(x => {
+    //     x.rightPosition = `${dimensions.width * ((100 - x.right) / 100)}px`;
+    //     x.topPosition = `${dimensions.height * (x.top / 100)}px`;
+    //     x.widthPosition = `${dimensions.width * (x.width / 100)}px`;
+    //     x.heightPosition = `${dimensions.height * (x.height / 100)}px`;
+    //     x.active = true;
+    //   });
+    // }
   }
 
   ngAfterViewInit() {
@@ -105,7 +148,6 @@ export class BuilderComponent implements OnInit, AfterViewInit {
     }
     setTimeout(() => {
       this.initer();
-      this.processMarkers();
     });
   }
   getDimensions(props: ClientRect) {
@@ -126,11 +168,11 @@ export class BuilderComponent implements OnInit, AfterViewInit {
     this.left = this.rectProps.left;
     const width = this.rectProps.width;
     this.right = this.rectProps.left + width;
-    const position = width / 2;
+    const position = width * 0.50;
     (this.handler as HTMLElement).style.left = `${position}px`;
     (this.dragHandler as HTMLElement).style.left = `${position}px`;
-    (this.firstImageWrapper as HTMLElement).style.width = `${width / 2}px`;
-    (this.secondImageWrapper as HTMLElement).style.width = `${width / 2}px`;
+    (this.firstImageWrapper as HTMLElement).style.width = `${width * 0.5}px`;
+    (this.secondImageWrapper as HTMLElement).style.width = `${width * 0.5}px`;
   }
 
   onWrapperClick() {
@@ -141,7 +183,7 @@ export class BuilderComponent implements OnInit, AfterViewInit {
       });
       setTimeout(() => {
         Array.prototype.slice.call(markers).forEach(mark => {
-          // (mark as any).classList.remove('active');
+          (mark as any).classList.remove('active');
         });
       }, 500);
     }
@@ -153,11 +195,11 @@ export class BuilderComponent implements OnInit, AfterViewInit {
       this.state = null;
       let elem = (this.secondImageWrapper as Element).querySelector('.image');
       if (elem) {
-        // elem.classList.remove('active');
+        elem.classList.remove('active');
       }
       elem = (this.firstImageWrapper as Element).querySelector('.image');
       if (elem) {
-        // elem.classList.remove('active');
+        elem.classList.remove('active');
       }
       setTimeout(() => {
         this.state = state;
@@ -203,6 +245,10 @@ export class BuilderComponent implements OnInit, AfterViewInit {
     // this.mouseEventCapturing = true;
   }
 
+  onMouseDownOnDragHandler() {
+    this.mouseEventCapturing = true;
+  }
+
   onMouseUp() {
     this.mouseEventCapturing = false;
   }
@@ -221,6 +267,16 @@ export class BuilderComponent implements OnInit, AfterViewInit {
 
   onPanEnd() {
     this.panEventCapturing = false;
+  }
+
+  onConfigChange($event, i, alignment) {
+    if (alignment === 'left') {
+      this.state.leftPage.markers[i] = $event;
+    }
+    if (alignment === 'right') {
+      this.state.rightPage.markers[i] = $event;
+    }
+    this.stateChange.emit(this.state);
   }
 
 }

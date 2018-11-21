@@ -1,20 +1,19 @@
 <div class="image-wrapper-outer" (click)="onWrapperClick()">
-    <div class="wrapper" #contentArea>
+    <div class="wrapper" #contentArea [attr.id]="handlerId">
       <div class="image-wrapper-holder" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseOut()" (mousedown)="onMouseDown()" (panstart)="onPanStart()" (panend)="onPanEnd()" (panmove)="onPanMove($event)"
         (mouseup)="onMouseUp()" #wrapper>
         <div class="image-wrapper first" #first>
           <div class="image" [style.backgroundImage]="state?.leftPage?.url">
-            <div class="image-marker" *ngFor="let marker of state?.leftPage?.markers" [class.active]="marker.active" (click)="onMarkActivate(marker)" [style.left]="marker.leftPosition " [style.top]="marker.topPosition " [style.width]="marker.widthPosition" [style.height]="marker.heightPosition"></div>
-            <marker></marker>
+            <marker [wrapperId]="handlerId" *ngFor="let marker of state?.leftPage?.markers; let i = index" alignment="left" [config]="marker" (configChange)="onConfigChange($event, i, 'left')"></marker>
           </div>
         </div>
         <div class="image-wrapper second" #second>
           <div class="image" [style.backgroundImage]="state?.rightPage?.url">
-            <div class="image-marker" *ngFor="let marker of state?.rightPage?.markers"  [class.active]="marker.active" (click)="onMarkActivate(marker)" [style.right]="marker.rightPosition " [style.top]="marker.topPosition " [style.width]="marker.widthPosition" [style.height]="marker.heightPosition"></div>
+              <marker [wrapperId]="handlerId" *ngFor="let marker of state?.rightPage?.markers; let i = index" alignment="right" [config]="marker" (configChange)="onConfigChange($event, i, 'right')"></marker>
           </div>
         </div>
         <div class="image-slider" [class.active]="mouseEventCapturing" #handler></div>
-        <div class="pan-handler" #dragHandler>
+        <div class="pan-handler" #dragHandler (mousedown)="onMouseDownOnDragHandler()" >
           <i class="material-icons">drag_indicator</i>
         </div>
       </div>

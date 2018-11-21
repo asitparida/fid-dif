@@ -1,313 +1,345 @@
+// tslint:disable
 export const BunBunStates = [
     {
-        state: 'LANDING',
-        leftPage: {
-            id: '1',
-            src: 'assets/bunbun/lo-fi/IMG_1130.JPG',
-            markers: [
-                {
-                    id: '1',
-                    top: 63,
-                    left: 41,
-                    width: 20.5,
-                    height: 13,
-                    targetState: 'DETAILS_LIST'
-                }
-            ]
-        },
-        rightPage: {
-            id: '2',
-            src: 'assets/bunbun/hi-fi/Bun Bun Landing.png',
-            markers: [
-                {
-                    id: '1',
-                    top: 53,
-                    right: 59.52,
-                    width: 19,
-                    height: 14,
-                    targetState: 'DETAILS_LIST'
-                }
-            ]
-        }
+       "state":"LANDING",
+       "leftPage":{
+          "id":"1",
+          "src":"assets/bunbun/lo-fi/IMG_1130.JPG",
+          "markers":[
+             {
+                "id":"1",
+                "top":61,
+                "left":38.36,
+                "width":29.51,
+                "height":17,
+                "targetState":"DETAILS_LIST",
+                "uid":"marker_2181973"
+             }
+          ]
+       },
+       "rightPage":{
+          "id":"2",
+          "src":"assets/bunbun/hi-fi/Bun Bun Landing.png",
+          "markers":[
+             {
+                "id":"1",
+                "top":51.82,
+                "right":60.17,
+                "width":24.19,
+                "height":16.65,
+                "targetState":"DETAILS_LIST",
+                "uid":"marker_8316718"
+             }
+          ]
+       },
+       "title":"Landing Page"
     },
     {
-        state: 'DETAILS_LIST',
-        leftPage: {
-            id: '1',
-            src: 'assets/bunbun/lo-fi/IMG_1131.JPG',
-            markers: [
-                {
-                    id: '1',
-                    top: 90,
-                    left: 290,
-                    width: 200,
-                    height: 200,
-                    targetState: 'ITEM_DETAILS_OVERLAY_PAGE'
-                }
-            ]
-        },
-        rightPage: {
-            id: '2',
-            src: 'assets/bunbun/hi-fi/Bun Bun Item List.png',
-            markers: [
-                {
-                    id: '1',
-                    top: 100,
-                    right: 300,
-                    width: 200,
-                    height: 185,
-                    targetState: 'ITEM_DETAILS_OVERLAY_PAGE'
-                }
-            ]
-        }
+       "state":"DETAILS_LIST",
+       "leftPage":{
+          "id":"1",
+          "src":"assets/bunbun/lo-fi/IMG_1131.JPG",
+          "markers":[
+             {
+                "id":"1",
+                "top":13.65,
+                "left":37.62,
+                "width":28.51,
+                "height":36.34,
+                "targetState":"ITEM_DETAILS_OVERLAY_PAGE",
+                "uid":"marker_6093722"
+             }
+          ]
+       },
+       "rightPage":{
+          "id":"2",
+          "src":"assets/bunbun/hi-fi/Bun Bun Item List.png",
+          "markers":[
+             {
+                "id":"1",
+                "top":16.32,
+                "right":61.08,
+                "width":26.95,
+                "height":33.67,
+                "targetState":"ITEM_DETAILS_OVERLAY_PAGE",
+                "uid":"marker_4539912"
+             }
+          ]
+       },
+       "title":"Listing Page"
     },
     {
-        state: 'ITEM_DETAILS_OVERLAY_PAGE',
-        leftPage: {
-            id: '1',
-            src: 'assets/bunbun/lo-fi/IMG_1132.JPG',
-            markers: [
-                {
-                    id: '1',
-                    top: 310,
-                    left: 400,
-                    width: 200,
-                    height: 70,
-                    targetState: 'ITEM_DETAILS_GLAZE_OPEN_PAGE'
-                }
-            ]
-        },
-        rightPage: {
-            id: '2',
-            src: 'assets/bunbun/hi-fi/Bun Bun Item Details.png',
-            markers: [
-                {
-                    id: '1',
-                    top: 360,
-                    right: 230,
-                    width: 140,
-                    height: 55,
-                    targetState: 'ITEM_DETAILS_GLAZE_OPEN_PAGE'
-                }
-            ]
-        }
+       "state":"ITEM_DETAILS_OVERLAY_PAGE",
+       "leftPage":{
+          "id":"1",
+          "src":"assets/bunbun/lo-fi/IMG_1132.JPG",
+          "markers":[
+             {
+                "id":"1",
+                "top":51.5,
+                "left":52.2,
+                "width":26.82,
+                "height":14,
+                "targetState":"ITEM_DETAILS_GLAZE_OPEN_PAGE",
+                "uid":"marker_8346298"
+             }
+          ]
+       },
+       "rightPage":{
+          "id":"2",
+          "src":"assets/bunbun/hi-fi/Bun Bun Item Details.png",
+          "markers":[
+             {
+                "id":"1",
+                "top":61.15,
+                "right":70.4,
+                "width":20,
+                "height":8.5,
+                "targetState":"ITEM_DETAILS_GLAZE_OPEN_PAGE",
+                "uid":"marker_4277368"
+             }
+          ]
+       },
+       "title":"Item Details on Overlay"
     },
     {
-        state: 'ITEM_DETAILS_GLAZE_OPEN_PAGE',
-        leftPage: {
-            id: '1',
-            src: 'assets/bunbun/lo-fi/IMG_1133.JPG',
-            markers: [
-                {
-                    id: '1',
-                    top: 475,
-                    left: 400,
-                    width: 200,
-                    height: 70,
-                    targetState: 'ITEM_DETAILS_GLAZE_UNITS_FILLED_PAGE'
-                }
-            ]
-        },
-        rightPage: {
-            id: '2',
-            src: 'assets/bunbun/hi-fi/Bun Bun Item Details – Pane Open for Glaze.png',
-            markers: [
-                {
-                    id: '1',
-                    top: 360,
-                    right: 230,
-                    width: 140,
-                    height: 55,
-                    targetState: 'ITEM_DETAILS_GLAZE_UNITS_FILLED_PAGE'
-                }
-            ]
-        }
+       "state":"ITEM_DETAILS_GLAZE_OPEN_PAGE",
+       "leftPage":{
+          "id":"1",
+          "src":"assets/bunbun/lo-fi/IMG_1133.JPG",
+          "markers":[
+             {
+                "id":"1",
+                "top":69.82,
+                "left":51.94,
+                "width":25.13,
+                "height":21.17,
+                "targetState":"ITEM_DETAILS_GLAZE_UNITS_FILLED_PAGE",
+                "uid":"marker_2737017"
+             }
+          ]
+       },
+       "rightPage":{
+          "id":"2",
+          "src":"assets/bunbun/hi-fi/Bun Bun Item Details – Pane Open for Glaze.png",
+          "markers":[
+             {
+                "id":"1",
+                "top":61.82,
+                "right":69.03,
+                "width":17.71,
+                "height":8,
+                "targetState":"ITEM_DETAILS_GLAZE_UNITS_FILLED_PAGE",
+                "uid":"marker_6293209"
+             }
+          ]
+       },
+       "title":"Selecting a Glaze on Overlay"
     },
     {
-        state: 'ITEM_DETAILS_GLAZE_UNITS_FILLED_PAGE',
-        leftPage: {
-            id: '1',
-            src: 'assets/bunbun/lo-fi/IMG_1134.JPG',
-            markers: [
-                {
-                    id: '1',
-                    top: 450,
-                    left: 410,
-                    width: 110,
-                    height: 70,
-                    targetState: 'CART_PAGE'
-                }
-            ]
-        },
-        rightPage: {
-            id: '2',
-            src: 'assets/bunbun/hi-fi/Bun Bun Item Details – Filled.png',
-            markers: [
-                {
-                    id: '1',
-                    top: 420,
-                    right: 262,
-                    width: 110,
-                    height: 48,
-                    targetState: 'CART_PAGE'
-                }
-            ]
-        }
+       "state":"ITEM_DETAILS_GLAZE_UNITS_FILLED_PAGE",
+       "leftPage":{
+          "id":"1",
+          "src":"assets/bunbun/lo-fi/IMG_1134.JPG",
+          "markers":[
+             {
+                "id":"1",
+                "top":73.58,
+                "left":53.06,
+                "width":14.18,
+                "height":13.5,
+                "targetState":"CART_PAGE",
+                "uid":"marker_5250754"
+             }
+          ]
+       },
+       "rightPage":{
+          "id":"2",
+          "src":"assets/bunbun/hi-fi/Bun Bun Item Details – Filled.png",
+          "markers":[
+             {
+                "id":"1",
+                "top":69.74,
+                "right":66.28,
+                "width":15.88,
+                "height":9.16,
+                "targetState":"CART_PAGE",
+                "uid":"marker_7525601"
+             }
+          ]
+       },
+       "title":"Glaze & Units Selected on Overlay"
     },
     {
-        state: 'CART_PAGE',
-        leftPage: {
-            id: '1',
-            src: 'assets/bunbun/lo-fi/IMG_1140.JPG',
-            markers: [
-                {
-                    id: '1',
-                    top: 470,
-                    left: 540,
-                    width: 140,
-                    height: 70,
-                    targetState: 'CART_DELIVERY_PAGE'
-                },
-                {
-                    id: '1',
-                    top: 470,
-                    left: 130,
-                    width: 140,
-                    height: 70,
-                    targetState: 'DETAILS_LIST'
-                }
-            ]
-        },
-        rightPage: {
-            id: '2',
-            src: 'assets/bunbun/hi-fi/Bun Bun Item Details – Cart Open Step 1.png',
-            markers: [
-                {
-                    id: '1',
-                    top: 430,
-                    right: 110,
-                    width: 100,
-                    height: 50,
-                    targetState: 'CART_DELIVERY_PAGE'
-                },
-                {
-                    id: '1',
-                    top: 430,
-                    right: 590,
-                    width: 100,
-                    height: 50,
-                    targetState: 'DETAILS_LIST'
-                }
-            ]
-        }
+       "state":"CART_PAGE",
+       "leftPage":{
+          "id":"1",
+          "src":"assets/bunbun/lo-fi/IMG_1140.JPG",
+          "markers":[
+             {
+                "id":"1",
+                "top":79.07,
+                "left":18.02,
+                "width":17.9,
+                "height":10.58,
+                "targetState":"CART_DELIVERY_PAGE",
+                "uid":"marker_48358"
+             },
+             {
+                "id":"1",
+                "top":77.33,
+                "left":68.36,
+                "width":20.3,
+                "height":11.32,
+                "targetState":"DETAILS_LIST",
+                "uid":"marker_9993998"
+             }
+          ]
+       },
+       "rightPage":{
+          "id":"2",
+          "src":"assets/bunbun/hi-fi/Bun Bun Item Details – Cart Open Step 1.png",
+          "markers":[
+             {
+                "id":"1",
+                "top":72.33,
+                "right":24.549999999999997,
+                "width":15.74,
+                "height":8.32,
+                "targetState":"CART_DELIVERY_PAGE",
+                "uid":"marker_3511627"
+             },
+             {
+                "id":"1",
+                "top":70.65,
+                "right":85.43,
+                "width":14.07,
+                "height":10.67,
+                "targetState":"DETAILS_LIST",
+                "uid":"marker_1558631"
+             }
+          ]
+       },
+       "title":"Cart Page"
     },
     {
-        state: 'CART_DELIVERY_PAGE',
-        leftPage: {
-            id: '1',
-            src: 'assets/bunbun/lo-fi/IMG_1141.JPG',
-            markers: [
-                {
-                    id: '1',
-                    top: 450,
-                    left: 540,
-                    width: 140,
-                    height: 70,
-                    targetState: 'CART_PAYMENT_PAGE'
-                }
-            ]
-        },
-        rightPage: {
-            id: '2',
-            src: 'assets/bunbun/hi-fi/Bun Bun Item Details – Cart Open Step 2.png',
-            markers: [
-                {
-                    id: '1',
-                    top: 430,
-                    right: 110,
-                    width: 100,
-                    height: 50,
-                    targetState: 'CART_PAYMENT_PAGE'
-                },
-                {
-                    id: '1',
-                    top: 430,
-                    right: 590,
-                    width: 100,
-                    height: 50,
-                    targetState: 'DETAILS_LIST'
-                }
-            ]
-        }
+       "state":"CART_DELIVERY_PAGE",
+       "leftPage":{
+          "id":"1",
+          "src":"assets/bunbun/lo-fi/IMG_1141.JPG",
+          "markers":[
+             {
+                "id":"1",
+                "top":75.08,
+                "left":73.83,
+                "width":14.05,
+                "height":11.5,
+                "targetState":"CART_PAYMENT_PAGE",
+                "uid":"marker_1948157"
+             }
+          ]
+       },
+       "rightPage":{
+          "id":"2",
+          "src":"assets/bunbun/hi-fi/Bun Bun Item Details – Cart Open Step 2.png",
+          "markers":[
+             {
+                "id":"1",
+                "top":71.08,
+                "right":24.620000000000005,
+                "width":15.89,
+                "height":9.82,
+                "targetState":"CART_PAYMENT_PAGE",
+                "uid":"marker_8419046"
+             },
+             {
+                "id":"1",
+                "top":72,
+                "right":85.03999999999999,
+                "width":13.15,
+                "height":8.66,
+                "targetState":"DETAILS_LIST",
+                "uid":"marker_3787498"
+             }
+          ]
+       },
+       "title":"Cart Page - capturing delivery details"
     },
     {
-        state: 'CART_PAYMENT_PAGE',
-        leftPage: {
-            id: '1',
-            src: 'assets/bunbun/lo-fi/IMG_1142.JPG',
-            markers: [
-                {
-                    id: '1',
-                    top: 470,
-                    left: 540,
-                    width: 140,
-                    height: 70,
-                    targetState: 'ORDER_CONFIRMATION_PAGE'
-                }
-            ]
-        },
-        rightPage: {
-            id: '2',
-            src: 'assets/bunbun/hi-fi/Bun Bun Item Details – Cart Open Step 3.png',
-            markers: [
-                {
-                    id: '1',
-                    top: 430,
-                    right: 110,
-                    width: 100,
-                    height: 50,
-                    targetState: 'ORDER_CONFIRMATION_PAGE'
-                },
-                {
-                    id: '1',
-                    top: 430,
-                    right: 590,
-                    width: 100,
-                    height: 50,
-                    targetState: 'CART_DELIVERY_PAGE'
-                }
-            ]
-        }
+       "state":"CART_PAYMENT_PAGE",
+       "leftPage":{
+          "id":"1",
+          "src":"assets/bunbun/lo-fi/IMG_1142.JPG",
+          "markers":[
+             {
+                "id":"1",
+                "top":78.08,
+                "left":69.72,
+                "width":21.22,
+                "height":14.16,
+                "targetState":"ORDER_CONFIRMATION_PAGE",
+                "uid":"marker_3357229"
+             }
+          ]
+       },
+       "rightPage":{
+          "id":"2",
+          "src":"assets/bunbun/hi-fi/Bun Bun Item Details – Cart Open Step 3.png",
+          "markers":[
+             {
+                "id":"1",
+                "top":70.16,
+                "right":22.730000000000004,
+                "width":12.62,
+                "height":11,
+                "targetState":"ORDER_CONFIRMATION_PAGE",
+                "uid":"marker_7665649"
+             },
+             {
+                "id":"1",
+                "top":71.32,
+                "right":85.17,
+                "width":13.15,
+                "height":9.83,
+                "targetState":"CART_DELIVERY_PAGE",
+                "uid":"marker_550333"
+             }
+          ]
+       },
+       "title":"Cart Page - capturing payment details"
     },
     {
-        state: 'ORDER_CONFIRMATION_PAGE',
-        leftPage: {
-            id: '1',
-            src: 'assets/bunbun/lo-fi/IMG_1143.JPG',
-            markers: [
-                {
-                    id: '1',
-                    top: 410,
-                    left: 310,
-                    width: 160,
-                    height: 60,
-                    targetState: 'LANDING'
-                }
-            ]
-        },
-        rightPage: {
-            id: '2',
-            src: 'assets/bunbun/hi-fi/Bun Bun - Order Complete.png',
-            markers: [
-                {
-                    id: '1',
-                    top: 365,
-                    right: 344,
-                    width: 110,
-                    height: 55,
-                    targetState: 'LANDING'
-                }
-            ]
-        }
+       "state":"ORDER_CONFIRMATION_PAGE",
+       "leftPage":{
+          "id":"1",
+          "src":"assets/bunbun/lo-fi/IMG_1143.JPG",
+          "markers":[
+             {
+                "id":"1",
+                "top":69.66,
+                "left":42.7,
+                "width":20.57,
+                "height":11,
+                "targetState":"LANDING",
+                "uid":"marker_1757962"
+             }
+          ]
+       },
+       "rightPage":{
+          "id":"2",
+          "src":"assets/bunbun/hi-fi/Bun Bun - Order Complete.png",
+          "markers":[
+             {
+                "id":"1",
+                "top":60.25,
+                "right":54.95,
+                "width":14.57,
+                "height":11.5,
+                "targetState":"LANDING",
+                "uid":"marker_5854010"
+             }
+          ]
+       },
+       "title":"Order Confirmation on Overlay"
     }
-];
+ ];

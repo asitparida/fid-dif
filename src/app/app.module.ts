@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { CompareComponent } from './compare/compare.component';
@@ -13,6 +14,7 @@ import { PreviewComponent } from './preview/preview.component';
 import { AppRoutingModule } from './app.routing';
 import { BuilderComponent } from './builder/builder.component';
 import { MarkerComponent } from './marker/marker.component';
+import { BuilderService } from './builder.service';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
@@ -33,12 +35,16 @@ export class MyHammerConfig extends HammerGestureConfig {
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [{
     provide: HAMMER_GESTURE_CONFIG,
     useClass: MyHammerConfig
-  }, AppService],
+  },
+  AppService,
+  BuilderService
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
