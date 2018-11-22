@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
-import { BunBunStates } from '../states';
 import { AppService } from '../app.service';
 import { BuilderService } from '../builder.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-builder',
@@ -32,7 +32,8 @@ export class BuilderComponent implements OnInit, AfterViewInit {
 
   constructor(
     private appService: AppService,
-    private builderService: BuilderService
+    private builderService: BuilderService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -56,14 +57,14 @@ export class BuilderComponent implements OnInit, AfterViewInit {
   loadState(state) {
     if (state) {
       this.state = null;
-      // let elem = (this.secondImageWrapper as Element).querySelector('.image');
-      // if (elem) {
-      //   elem.classList.remove('active');
-      // }
-      // elem = (this.firstImageWrapper as Element).querySelector('.image');
-      // if (elem) {
-      //   elem.classList.remove('active');
-      // }
+      let elem = (this.secondImageWrapper as Element).querySelector('.image');
+      if (elem) {
+        elem.classList.remove('active');
+      }
+      elem = (this.firstImageWrapper as Element).querySelector('.image');
+      if (elem) {
+        elem.classList.remove('active');
+      }
       setTimeout(() => {
         this.state = state;
         this.loadMarkers();
@@ -80,7 +81,7 @@ export class BuilderComponent implements OnInit, AfterViewInit {
       leftImg.style.opacity = '0';
       leftImg.src = this.state.leftPage.src;
       leftImg.onload = () => {
-        (this.state.leftPage as any).url = `url('${this.state.leftPage.src}')`;
+        (this.state.leftPage as any).url = this.sanitizer.bypassSecurityTrustStyle(`url('${this.state.leftPage.src}')`);
         setTimeout(() => {
           const elem = (this.firstImageWrapper as Element).querySelector('.image');
           if (elem) {
@@ -95,7 +96,7 @@ export class BuilderComponent implements OnInit, AfterViewInit {
       rightImg.style.opacity = '0';
       rightImg.src = this.state.rightPage.src;
       rightImg.onload = () => {
-        (this.state.rightPage as any).url = `url('${this.state.rightPage.src}')`;
+        (this.state.rightPage as any).url = this.sanitizer.bypassSecurityTrustStyle(`url('${this.state.rightPage.src}')`);
         setTimeout(() => {
           const elem = (this.secondImageWrapper as Element).querySelector('.image');
           if (elem) {
@@ -108,25 +109,6 @@ export class BuilderComponent implements OnInit, AfterViewInit {
   }
 
   processMarkers() {
-    // const dimensions: ClientRect = (this.wrapper as HTMLElement).getBoundingClientRect();
-    // if (this.state && this.state.leftPage && this.state.leftPage.markers && this.state.leftPage.markers.length > 0) {
-    //   this.state.leftPage.markers.forEach(x => {
-    //     x.leftPosition = `${dimensions.width * (x.left / 100)}px`;
-    //     x.topPosition = `${dimensions.height * (x.top / 100)}px`;
-    //     x.widthPosition = `${dimensions.width * (x.width / 100)}px`;
-    //     x.heightPosition = `${dimensions.height * (x.height / 100)}px`;
-    //     x.active = true;
-    //   });
-    // }
-    // if (this.state && this.state.rightPage && this.state.rightPage.markers && this.state.rightPage.markers.length > 0) {
-    //   this.state.rightPage.markers.forEach(x => {
-    //     x.rightPosition = `${dimensions.width * ((100 - x.right) / 100)}px`;
-    //     x.topPosition = `${dimensions.height * (x.top / 100)}px`;
-    //     x.widthPosition = `${dimensions.width * (x.width / 100)}px`;
-    //     x.heightPosition = `${dimensions.height * (x.height / 100)}px`;
-    //     x.active = true;
-    //   });
-    // }
   }
 
   ngAfterViewInit() {
@@ -186,28 +168,6 @@ export class BuilderComponent implements OnInit, AfterViewInit {
           (mark as any).classList.remove('active');
         });
       }, 500);
-    }
-  }
-
-  onMarkActivate(marker) {
-    const state = BunBunStates.find(x => x.state === marker.targetState);
-    if (state) {
-      this.state = null;
-      let elem = (this.secondImageWrapper as Element).querySelector('.image');
-      if (elem) {
-        elem.classList.remove('active');
-      }
-      elem = (this.firstImageWrapper as Element).querySelector('.image');
-      if (elem) {
-        elem.classList.remove('active');
-      }
-      setTimeout(() => {
-        this.state = state;
-        this.ngOnInit();
-        setTimeout(() => {
-          this.loadImages();
-        }, 1);
-      });
     }
   }
 

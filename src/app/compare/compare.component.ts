@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Input } from '@angular/core';
-import { BunBunStates } from '../states';
+import { BunBunConfig } from '../states';
 import { AppService } from '../app.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-compare',
@@ -27,9 +28,11 @@ export class CompareComponent implements AfterViewInit, OnInit {
   private rectProps: ClientRect;
   private left = 0;
   private right = 0;
-  state: any = BunBunStates[0];
+  state: any = BunBunConfig.config[0];
 
-  constructor(private appService: AppService) { }
+  constructor(
+    private appService: AppService,
+    private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
   }
@@ -38,7 +41,7 @@ export class CompareComponent implements AfterViewInit, OnInit {
     leftImg.style.opacity = '0';
     leftImg.src = this.state.leftPage.src;
     leftImg.onload = () => {
-      (this.state.leftPage as any).url = `url('${this.state.leftPage.src}')`;
+      (this.state.leftPage as any).url = this.sanitizer.bypassSecurityTrustStyle(`url('${this.state.leftPage.src}')`);
       setTimeout(() => {
         const elem = (this.firstImageWrapper as Element).querySelector('.image');
         if (elem) {
@@ -51,7 +54,7 @@ export class CompareComponent implements AfterViewInit, OnInit {
     rightImg.style.opacity = '0';
     rightImg.src = this.state.rightPage.src;
     rightImg.onload = () => {
-      (this.state.rightPage as any).url = `url('${this.state.rightPage.src}')`;
+      (this.state.rightPage as any).url = this.sanitizer.bypassSecurityTrustStyle(`url('${this.state.rightPage.src}')`);
       setTimeout(() => {
         const elem = (this.secondImageWrapper as Element).querySelector('.image');
         if (elem) {
@@ -148,7 +151,7 @@ export class CompareComponent implements AfterViewInit, OnInit {
   }
 
   onMarkActivate(marker) {
-    const state = BunBunStates.find(x => x.state === marker.targetState);
+    const state = BunBunConfig.config.find(x => x.state === marker.targetState);
     if (state) {
       this.state = null;
       let elem = (this.secondImageWrapper as Element).querySelector('.image');

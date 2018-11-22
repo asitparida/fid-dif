@@ -1,31 +1,40 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { BunBunStates } from '../states';
 import { BuilderService } from '../builder.service';
-import { SampleFiles } from '../sample';
-import { NgForm, FormControl, AbstractControl } from '@angular/forms';
+import { GUID } from 'src/helpers';
+import { AppService } from '../app.service';
+import { DomSanitizer } from '@angular/platform-browser';
+declare var AWS: any;
 
 @Component({
     selector: 'app-authoring',
     templateUrl: './authoring.component.html',
     styleUrls: ['./authoring.component.scss']
 })
-export class AuthoringComponent implements OnInit, AfterViewInit {
+export class AuthoringComponent implements OnInit {
     handlerId = 'handler_' + Math.floor(Math.random() * 10e6);
     fidelityStates = [];
     activeIndex = 0;
     editing = {};
-    constructor(private builderService: BuilderService) { }
+    config: any;
+    configId = '5e91671d-21e1-f2ee-d00c-750421a30c01';
+    constructor(
+        private builderService: BuilderService,
+        private appService: AppService,
+        private sanitizer: DomSanitizer
+    ) { }
     ngOnInit() {
-        const temp = [];
-        BunBunStates.forEach((state, i) => {
-            const obj = Object.assign({}, state);
-            (obj.leftPage as any).imgSrc = `url('${state.leftPage.src}')`;
-            (obj.rightPage as any).imgSrc = `url('${state.rightPage.src}')`;
-            this.fidelityStates.push(obj);
+        this.appService.getConfig(this.configId).subscribe((data: any) => {
+            if (data && data.Item) {
+                this.config = data.Item;
+                const config = this.config.config;
+                config.forEach(x => {
+                    x.leftPage.imgSrc = this.sanitizer.bypassSecurityTrustStyle(`url('${x.leftPage.src}')`);
+                    x.rightPage.imgSrc = this.sanitizer.bypassSecurityTrustStyle(`url('${x.rightPage.src}')`);
+                    this.fidelityStates.push(x);
+                });
+                this.builderService.state.next(this.fidelityStates[this.activeIndex]);
+            }
         });
-    }
-    ngAfterViewInit() {
-        this.builderService.state.next(this.fidelityStates[this.activeIndex]);
     }
     onStateUpdated($event) {
         const state = this.fidelityStates.find(x => x.state === $event.state);
@@ -60,9 +69,12 @@ export class AuthoringComponent implements OnInit, AfterViewInit {
     }
 
     saveConfig() {
-        // Object.keys(this.form.controls).forEach((control) => {
-        //     this.form.controls[control].markAsPristine();
-        // });
+        const obj = Object.assign({}, this.config, {
+            config: this.fidelityStates
+        });
+        this.appService.saveConfig(obj).subscribe((data) => {
+            console.log(data);
+        });
     }
 
 }
