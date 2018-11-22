@@ -41,6 +41,7 @@
             border: 2px solid rgba(0, 0, 0, 1);
             cursor: pointer;
             transition: background-color 0.3s linear 0s;
+            border-bottom: none;
             &:nth-child(2n + 1) {
                 border-top-left-radius: 15px;
                 border-right-width: 1px;
