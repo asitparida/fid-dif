@@ -19,10 +19,61 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     .holder-item {
         display: flex;
         width: 100%;
         justify-content: center;
+        align-items: center;
+        flex: 1;
+        order: 1;
+    }
+    .holder-type-toggler {
+        height: 36px;
+        flex: initial;
+        order: 2;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        .holder-type {
+            display: block;
+            margin: 0;
+            border: 2px solid rgba(0, 0, 0, 1);
+            cursor: pointer;
+            transition: background-color 0.3s linear 0s;
+            &:nth-child(2n + 1) {
+                border-top-left-radius: 15px;
+                border-right-width: 1px;
+            }
+            &:nth-child(2n) {
+                border-top-right-radius: 15px;
+                border-left-width: 1px;
+            }
+            &.active {
+                background-color: rgba(0, 0, 0, 1);
+                color: #fff;
+            }
+            &:hover {
+                &:not(.active) {
+                    background-color: rgba(0, 0, 0, 0.10);
+                }
+            }
+            i {
+                height: 36px;
+                width: 100px;
+                line-height: 36px;
+                text-align: center;
+                display: block;
+                margin: 0;
+                user-select: none;
+            }
+            label {
+                display: block;
+                text-align: center;
+                margin: 5px 0 10px 0;
+                display: none;
+            }
+        }
     }
 }
 .full-wrapper {
