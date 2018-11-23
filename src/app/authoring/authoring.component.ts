@@ -17,6 +17,10 @@ export class AuthoringComponent implements OnInit {
     editing = {};
     config: any;
     configId = '5e91671d-21e1-f2ee-d00c-750421a30c01';
+    folderOptions = [];
+    showPhotoChooser = false;
+    editingState = '';
+    editingType = '';
     constructor(
         private builderService: BuilderService,
         private appService: AppService,
@@ -34,6 +38,27 @@ export class AuthoringComponent implements OnInit {
                 });
                 this.builderService.state.next(this.fidelityStates[this.activeIndex]);
             }
+        });
+        this.builderService.getFolders().subscribe((data: any) => {
+            this.folderOptions = data.map(x => {
+                return {
+                    folderName: x,
+                    files: [],
+                    active: false
+                };
+            });
+            if (this.folderOptions.length > 0) {
+                this.folderOptions.forEach(folder => {
+                    this.builderService.getFiles(folder.folderName).subscribe(files => {
+                        folder.files = files;
+                    });
+                });
+            }
+            setTimeout(() => {
+                this.folderOptions.forEach((x, i) => {
+                    x.active = i === 0;
+                });
+            }, 3000);
         });
     }
     onStateUpdated($event) {
@@ -65,16 +90,69 @@ export class AuthoringComponent implements OnInit {
                 window.URL.revokeObjectURL(url);
             };
         }());
-        saveData(this.fidelityStates, 'config.json');
+        const obj = Object.assign({}, this.config, {
+            config: this.fidelityStates
+        });
+        saveData(obj, 'config.json');
     }
 
     saveConfig() {
         const obj = Object.assign({}, this.config, {
             config: this.fidelityStates
         });
+        console.log(obj);
         this.appService.saveConfig(obj).subscribe((data) => {
-            console.log(data);
+            console.log(obj);
         });
+    }
+
+    acivateFolderOption(option) {
+        this.folderOptions.forEach(x => {
+            x.active = x.folderName === option.folderName;
+        });
+    }
+
+    choosePhoto(file) {
+        const state = this.fidelityStates.find( x => x.state === this.editingState);
+        if (state) {
+            if (this.editingType === 'left') {
+                (state as any).leftPage.src = file.Url;
+                (state as any).leftPage.imgSrc = this.sanitizer.bypassSecurityTrustStyle(`url('${file.Url}')`);
+                (state as any).leftPage.url = this.sanitizer.bypassSecurityTrustStyle(`url('${file.Url}')`);
+            } else if (this.editingType === 'right') {
+                (state as any).rightPage.src = file.Url;
+                (state as any).rightPage.imgSrc = this.sanitizer.bypassSecurityTrustStyle(`url('${file.Url}')`);
+                (state as any).rightPage.url = this.sanitizer.bypassSecurityTrustStyle(`url('${file.Url}')`);
+            }
+        }
+        this.editingState = null;
+        this.editingType = null;
+        this.showPhotoChooser = false;
+    }
+
+    closePhotoChooser() {
+        this.editingType = null;
+        this.editingState = null;
+        this.showPhotoChooser = false;
+    }
+
+    onImageAction(type, actionType, state) {
+        if (actionType === 'edit') {
+            this.editingType = type;
+            this.editingState = state.state;
+            this.showPhotoChooser = true;
+        }
+        if (actionType === 'delete') {
+            if (type === 'left') {
+                state.leftPage.src = null;
+                state.leftPage.imgSrc = null;
+                state.leftPage.url = null;
+            } else if (type === 'right') {
+                state.rightPage.src = null;
+                state.rightPage.imgSrc = null;
+                state.rightPage.url = null;
+            }
+        }
     }
 
 }

@@ -22,7 +22,14 @@
           </div>
           <div class="left">
             <label class="state-label">Left Image</label>
-            <div class="image" [style.backgroundImage]="state?.leftPage?.imgSrc"></div>
+            <div class="image" [style.backgroundImage]="state?.leftPage?.imgSrc">
+               <div class="image-action" (click)="onImageAction('left', 'edit', state)" [class.stretched]="!state?.leftPage?.src">
+                <i class="material-icons">edit</i>
+              </div>
+              <div class="image-action" (click)="onImageAction('left', 'delete', state)" *ngIf="state?.leftPage?.src">
+                <i class="material-icons">delete_outline</i>
+              </div>
+            </div>
             <label class="state-label" style="margin-top: 15px">Left Markers</label>
             <div class="marker" *ngFor="let marker of state?.leftPage?.markers; let i = index">
               <select [(ngModel)]="marker.targetState" [name]="'ls_' + i" [attr.id]="'lsid_' + i">
@@ -32,7 +39,14 @@
           </div>
           <div class="right">
             <label class="state-label">Right Image</label>
-            <div class="image" [style.backgroundImage]="state?.rightPage?.imgSrc"></div>
+            <div class="image" [style.backgroundImage]="state?.rightPage?.imgSrc">
+              <div class="image-action" (click)="onImageAction('right', 'edit', state)" [class.stretched]="!state?.rightPage?.src">
+                <i class="material-icons">edit</i>
+              </div>
+              <div class="image-action" (click)="onImageAction('right', 'delete', state)" *ngIf="state?.rightPage?.src">
+                <i class="material-icons">delete_outline</i>
+              </div>
+            </div>
             <label class="state-label" style="margin-top: 15px">Right Markers</label>
             <div class="marker" *ngFor="let marker of state?.rightPage?.markers; let i = index">
               <select [(ngModel)]="marker.targetState" [name]="'rs_' + i" [attr.id]="'rsid_' + i">
@@ -48,6 +62,28 @@
       <app-device-wrapper device="ipad landscape" [handlerId]="handlerId" class="zoomed-out">
         <app-builder (stateChange)="onStateUpdated($event)" [handlerId]="handlerId"></app-builder>
       </app-device-wrapper>
+    </div>
+  </div>
+  <div class="photo-chooser" [hidden]="!showPhotoChooser">
+    <div class="photo-chooser-overlay"></div>
+    <div class="photo-chooser-details-wrapper">
+      <div class="photo-chooser-details">
+        <div class="closer" (click)="closePhotoChooser()">
+          <i class="material-icons">close</i>
+        </div>
+        <div class="header">
+          <label [class.active]="option.active" *ngFor="let option of folderOptions" (click)="acivateFolderOption(option)">{{option.folderName}}</label>
+        </div>
+        <div class="collection-wrapper">
+          <ng-container *ngFor="let option of folderOptions">
+            <div class="collection" [hidden]="!option.active">
+              <div class="collection-item" *ngFor="let file of option.files" (click)="choosePhoto(file)"
+                [style.backgroundImage]="file.imgUrl"></div>
+              <div class="clearfix"></div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
     </div>
   </div>
 </div>

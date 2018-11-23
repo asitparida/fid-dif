@@ -78,14 +78,14 @@ export class CompareComponent implements AfterViewInit, OnInit {
       x.topPosition = `${dimensions.height * (x.top / 100)}px`;
       x.widthPosition =  `${dimensions.width * (x.width / 100)}px`;
       x.heightPosition =  `${dimensions.height * (x.height / 100)}px`;
-      x.active = true;
+      // x.active = true;
     });
     this.state.rightPage.markers.forEach(x => {
       x.rightPosition = `${dimensions.width * ((100 - x.right) / 100)}px`;
       x.topPosition = `${dimensions.height * (x.top / 100)}px`;
       x.widthPosition =  `${dimensions.width * (x.width / 100)}px`;
       x.heightPosition =  `${dimensions.height * (x.height / 100)}px`;
-      x.active = true;
+      // x.active = true;
     });
   }
 

@@ -2,11 +2,15 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    position: relative;
+    z-index: 1;
     .authoring-container {
         width: 100%;
         height: 100%;
         display: flex;
         flex-flow: row;
+        position: relative;
+        z-index: 2;
         .authoring-items-wrapper{
             height: 100%;
             order: 1;
@@ -142,10 +146,6 @@
                             border: 1px soldi rgba(0, 0, 0, 0.10);
                         }
                     }
-                    .left,
-                    .right {
-                        
-                    }
                     .left {
                         padding: 0 10px 20px 20px;
                         width: 50%;
@@ -168,8 +168,37 @@
                         display: inline-block;
                         vertical-align: middle; 
                         border: 1px solid #D0D0D0;
+                        overflow: hidden;
+                        .image-action {
+                            &:not(.stretched) {
+                                display: none;
+                            }
+                            float: left;
+                            height: 100%;
+                            width: 50%;
+                            background-color: rgba(0, 0, 0, 0.2);
+                            transition: background-color 0.3s linear 0s;
+                            &.stretched {
+                                width: 100%;
+                                color: #000;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                background-color: rgba(0, 0, 0, 0.05);
+                            }
+                        }
                         &:hover {
-                            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.50)
+                            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.50);
+                            .image-action {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                background-color: rgba(0, 0, 0, 0.50);
+                                color: #fff;
+                                &:hover {
+                                    background-color: rgba(0, 0, 0, 0.80);
+                                }
+                            }
                         }
                     }
                 }
@@ -183,6 +212,116 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+    }
+    .photo-chooser {
+        height: 100%;
+        width: 100%;
+        z-index: 3;
+        position: absolute;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        .photo-chooser-overlay {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            z-index: 4;
+            background: rgba(0, 0, 0, 0.50);
+        }
+        .photo-chooser-details-wrapper {
+            z-index: 4;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .photo-chooser-details {
+            z-index: 4;
+            position: relative;
+            width: 80%;
+            height: 80%;
+            display: flex;
+            flex-flow: column;
+            background: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            .closer {
+                z-index: 5;
+                position: absolute;
+                top:0;
+                right:0;
+                line-height: 60px;
+                width: 60px;
+                height: 60px;
+                text-align: center;
+                color: rgba(0, 0, 0, 0.80);
+                cursor: pointer;
+                &:hover {
+                    background: rgba(0, 0, 0, 0.1);
+                }
+                i {
+                    line-height: 60px;
+                    font-size: small;
+                }
+            }
+            .header {
+                padding: 0 30px;
+                order: 1;
+                height: 60px;
+                flex: initial;
+                width: 100%;
+                background: #f0f0f0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                label {
+                    line-height: 60px;
+                    height: 60px;
+                    display: inline-block;
+                    padding: 0 30px;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                    cursor: pointer;
+                    &.active {
+                        border-bottom-width: 3px;
+                        border-bottom-color: rgba(0, 0, 0, 1);
+                    }
+                }
+            }
+            .collection-wrapper {
+                flex: 1;
+                order: 2;
+                width: 100%;
+                overflow-y: auto;
+                -ms-overflow-style: -ms-autohiding-scrollbar;
+                -webkit-overflow-scrolling: touch;
+                margin-bottom: 15px;
+                .collection {
+                    width: 100%;
+                    height: 100%;
+                    padding: 15px;
+                    .collection-item {
+                        float: left;
+                        width: calc((100% - 150px) * 0.20);
+                        height: 200px;
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        border: 1px solid rgba(0, 0, 0, 0.2);
+                        margin: 15px;
+                        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.0);
+                        transition: box-shadow 0.3s linear 0s;
+                        cursor: pointer;
+                        &:hover,
+                        &:focus,
+                        &:active {
+                            box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
+                        }
+                    }
+                }
+            }
         }
     }
 }
