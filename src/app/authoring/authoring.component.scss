@@ -84,14 +84,14 @@
                         right: 0;
                         top: 0;
                         background: rgba(0,0,0,0.05);
-                        padding: 0 15px;
+                        padding: 0 0 0 15px;
                         height: 36px;
                         text-align: center;
                         line-height: 36px;
                         font-weight: bold;
                         font-size: x-small;
                         text-transform: uppercase;
-                        color: rgba(0, 0, 0, 0.5);
+                        color: rgba(0, 0, 0, 0.8);
 
                         i {
                             margin-left: 15px;
@@ -109,6 +109,7 @@
                     }
                     &.active {
                         border-left-color: rgba(0, 0, 0, 0.5);
+                        background: rgba(0, 0, 0, 0.03);
                     }
                     &:hover {
                         border-left-color: rgba(0, 0, 0, 0.2);
@@ -127,7 +128,8 @@
                     .marker {
                         width: 100%;
                         select {
-                            width: 100%;
+                            float: left;
+                            width: calc(100% - 24px);
                             height: 24px;
                             line-height: 24px;
                             border: 1px solid #E0E0E0;
@@ -135,8 +137,36 @@
                             background: #fff;
                             outline: none;
                         }
+                        .close {
+                            width: 24px;
+                            height: 24px;
+                            line-height: 24px;
+                            float: right;
+                            color: #909090;
+                            font-size: small;
+                            text-align: center;
+                        }
                         &:not(:last-child) {
                             margin-bottom: 5px;
+                        }
+                    }
+                    .add-marker {
+                        background: transparent;
+                        border: none;
+                        line-height: 24px;
+                        height: 24px;
+                        cursor: pointer;
+                        color: #707070;
+                        i {
+                            font-size: x-small;
+                            display: inline-block;
+                            vertical-align: middle;
+                            margin-right: 5px;
+                            line-height: 24px;
+                        }
+                        &:hover {
+                            background: 
+                            rgba(0, 0, 0, 0.05);
                         }
                     }
                     .state-details {
@@ -251,8 +281,8 @@
                     justify-content: center;
                     align-items: flex-end;
                     .authoring-action {
-                        border: 2px solid rgba(0, 0, 0, 0.80);
-                        color: rgba(0, 0, 0, 0.80);
+                        border: 2px solid rgba(0, 0, 0, 0.50);
+                        color: rgba(0, 0, 0, 0.50);
                         border-radius: 20px;
                         height: 36px;;
                         line-height: 32px;

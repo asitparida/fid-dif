@@ -3,7 +3,7 @@
     <div class="authoring-items-wrapper">
       <div class="authoring-items-header">
         <input class="action-input" *ngIf="config" [(ngModel)]="config.title" placeholder="Add a title for the state" name="configTitle" />
-        <div class="action">
+        <div class="action" (click)="addState()">
           <i class="material-icons">add_box</i>
         </div>
         <div class="action" (click)="saveConfig()">
@@ -16,7 +16,10 @@
       <div class="authoring-items-holder">
         <div class="authoring-image-item" *ngFor="let state of fidelityStates; let i = index" (click)="activateState(i)"
           [class.active]="activeIndex === i">
-          <div class="active-index">State {{i + 1}}</div>
+          <div class="active-index">
+              State {{i + 1}}
+              <i class="material-icons" (click)="deleteState(state)">delete</i>
+          </div>
           <div class="state-details">
             <label class="state-label">Title</label>
             <input [(ngModel)]="state.title" placeholder="Add a title for the state" [name]="'name' + i" />
@@ -36,7 +39,10 @@
               <select [(ngModel)]="marker.targetState" [name]="'ls_' + i" [attr.id]="'lsid_' + i">
                 <option *ngFor="let target of fidelityStates" [value]="target.state">{{target.title}}</option>
               </select>
+              <i class="material-icons close" (click)="removeState(state, 'left', marker.uid)">close</i>
+              <div class="clearfix"></div>
             </div>
+            <button class="add-marker" (click)="addMarker(state, 'left')"><i class="material-icons">add</i>Add Marker</button>
           </div>
           <div class="right">
             <label class="state-label">Right Image</label>
@@ -53,7 +59,10 @@
               <select [(ngModel)]="marker.targetState" [name]="'rs_' + i" [attr.id]="'rsid_' + i">
                 <option *ngFor="let target of fidelityStates" [value]="target.state">{{target.title}}</option>
               </select>
+              <i class="material-icons close" (click)="removeState(state, 'right', marker.uid)">close</i>
+              <div class="clearfix"></div>
             </div>
+            <button class="add-marker" (click)="addMarker(state, 'right')"><i class="material-icons">add</i>Add Marker</button>
           </div>
           <div class="clearfix"></div>
         </div>

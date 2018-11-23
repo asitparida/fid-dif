@@ -102,7 +102,14 @@ export class AuthoringComponent implements OnInit {
         const obj = Object.assign({}, this.config, {
             config: this.fidelityStates
         });
-        console.log(obj);
+        if (obj && obj.config && obj.config.leftPage) {
+            delete obj.config.leftPage.url;
+            delete obj.config.leftPage.imgSrc;
+        }
+        if (obj && obj.config && obj.config.rightPage) {
+            delete obj.config.rightPage.url;
+            delete obj.config.rightPage.imgSrc;
+        }
         this.appService.saveConfig(obj).subscribe((data) => {
             console.log(obj);
         });
@@ -115,7 +122,7 @@ export class AuthoringComponent implements OnInit {
     }
 
     choosePhoto(file) {
-        const state = this.fidelityStates.find( x => x.state === this.editingState);
+        const state = this.fidelityStates.find(x => x.state === this.editingState);
         if (state) {
             if (this.editingType === 'left') {
                 (state as any).leftPage.src = file.Url;
@@ -159,6 +166,70 @@ export class AuthoringComponent implements OnInit {
 
     publishPrototype() {
         this.router.navigate([`/preview/${this.configId}`]);
+    }
+
+    deleteState(state) {
+        this.fidelityStates.forEach(fs => {
+            fs.leftPage.markers.filter(m => m.targetState === state.state).forEach(m => {
+                m.targetState = null;
+            });
+            fs.rightPage.markers.filter(m => m.targetState === state.state).forEach(m => {
+                m.targetState = null;
+            });
+        });
+        this.fidelityStates = this.fidelityStates.filter(m => m.state !== state.state);
+    }
+
+    addState() {
+        const state = {
+            state: `STATE_${Math.floor(Math.random() * 10e6)}`,
+            title: null,
+            leftPage: {
+                id: `STATE_LEFT_PAGE_${Math.floor(Math.random() * 10e6)}`,
+                src: null,
+                markers: []
+            },
+            rightPage: {
+                id: `STATE_LEFT_PAGE_${Math.floor(Math.random() * 10e6)}`,
+                src: null,
+                markers: []
+            }
+        };
+        this.fidelityStates.push(state);
+    }
+
+    addMarker(state, type) {
+        if (type === 'left') {
+            state.leftPage.markers.push({
+                height: 25,
+                id: `STATE_LEFT_PAGE_${Math.floor(Math.random() * 10e6)}`,
+                left: 20,
+                targetState: null,
+                top: 50,
+                uid: `STATE_LEFT_PAGE_MARKER_${Math.floor(Math.random() * 10e6)}`,
+                width: 25,
+            });
+        }
+        if (type === 'right') {
+            state.rightPage.markers.push({
+                height: 25,
+                id: `STATE_LEFT_PAGE_${Math.floor(Math.random() * 10e6)}`,
+                right: 20,
+                targetState: null,
+                top: 50,
+                uid: `STATE_LEFT_PAGE_MARKER_${Math.floor(Math.random() * 10e6)}`,
+                width: 25,
+            });
+        }
+    }
+
+    removeState(state, type , uid) {
+        if (type === 'left') {
+            state.leftPage.markers = state.leftPage.markers.filter(x => x.uid !== uid);
+        }
+        if (type === 'right') {
+            state.rightPage.markers = state.rightPage.markers.filter(x => x.uid !== uid);
+        }
     }
 
 }
