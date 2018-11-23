@@ -3,6 +3,7 @@ import { BuilderService } from '../builder.service';
 import { GUID } from 'src/helpers';
 import { AppService } from '../app.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 declare var AWS: any;
 
 @Component({
@@ -24,7 +25,8 @@ export class AuthoringComponent implements OnInit {
     constructor(
         private builderService: BuilderService,
         private appService: AppService,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private router: Router
     ) { }
     ngOnInit() {
         this.appService.getConfig(this.configId).subscribe((data: any) => {
@@ -153,6 +155,10 @@ export class AuthoringComponent implements OnInit {
                 state.rightPage.url = null;
             }
         }
+    }
+
+    publishPrototype() {
+        this.router.navigate([`/preview/${this.configId}`]);
     }
 
 }

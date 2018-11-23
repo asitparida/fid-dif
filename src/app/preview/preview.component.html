@@ -1,15 +1,15 @@
 <div class="holder-wrapper">
   <ng-container *ngIf="!showFullWrapper">
     <div class="holder-item-wrapper">
-      <div class="holder">
+      <div class="holder" *ngIf="config">
         <div class="holder-item" *ngIf="selectedDevice === 'macbook'">
           <app-device-wrapper device="macbook" [handlerId]="handlerIdOne">
-            <app-compare [handlerId]="handlerIdOne"></app-compare>
+            <app-compare [config]="config" [handlerId]="handlerIdOne"></app-compare>
           </app-device-wrapper>
         </div>
         <div class="holder-item" *ngIf="selectedDevice === 'ipad'">
           <app-device-wrapper device="ipad landscape" [handlerId]="handlerIdTwo">
-            <app-compare [handlerId]="handlerIdTwo"></app-compare>
+            <app-compare [config]="config" [handlerId]="handlerIdTwo"></app-compare>
           </app-device-wrapper>
         </div>
         <div class="holder-type-toggler">

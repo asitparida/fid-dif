@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app.routing';
 import { BuilderComponent } from './builder/builder.component';
 import { MarkerComponent } from './marker/marker.component';
 import { BuilderService } from './builder.service';
+import { HomeComponent } from './home/home.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
@@ -31,7 +32,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     AuthoringComponent,
     PreviewComponent,
     BuilderComponent,
-    MarkerComponent
+    MarkerComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

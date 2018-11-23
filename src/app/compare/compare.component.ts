@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Input } from '
 import { BunBunConfig } from '../states';
 import { AppService } from '../app.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-compare',
@@ -28,13 +29,17 @@ export class CompareComponent implements AfterViewInit, OnInit {
   private rectProps: ClientRect;
   private left = 0;
   private right = 0;
-  state: any = BunBunConfig.config[0];
+  configId;
+  @Input() config;
+  state: any = null;
 
   constructor(
     private appService: AppService,
-    private sanitizer: DomSanitizer) { }
+    private sanitizer: DomSanitizer,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.state = this.config.config[0];
   }
   loadImages() {
     const leftImg = document.createElement('img');
@@ -78,14 +83,12 @@ export class CompareComponent implements AfterViewInit, OnInit {
       x.topPosition = `${dimensions.height * (x.top / 100)}px`;
       x.widthPosition =  `${dimensions.width * (x.width / 100)}px`;
       x.heightPosition =  `${dimensions.height * (x.height / 100)}px`;
-      // x.active = true;
     });
     this.state.rightPage.markers.forEach(x => {
       x.rightPosition = `${dimensions.width * ((100 - x.right) / 100)}px`;
       x.topPosition = `${dimensions.height * (x.top / 100)}px`;
       x.widthPosition =  `${dimensions.width * (x.width / 100)}px`;
       x.heightPosition =  `${dimensions.height * (x.height / 100)}px`;
-      // x.active = true;
     });
   }
 

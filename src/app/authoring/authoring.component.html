@@ -2,6 +2,7 @@
   <div class="authoring-container">
     <div class="authoring-items-wrapper">
       <div class="authoring-items-header">
+        <input class="action-input" *ngIf="config" [(ngModel)]="config.title" placeholder="Add a title for the state" name="configTitle" />
         <div class="action">
           <i class="material-icons">add_box</i>
         </div>
@@ -23,7 +24,7 @@
           <div class="left">
             <label class="state-label">Left Image</label>
             <div class="image" [style.backgroundImage]="state?.leftPage?.imgSrc">
-               <div class="image-action" (click)="onImageAction('left', 'edit', state)" [class.stretched]="!state?.leftPage?.src">
+              <div class="image-action" (click)="onImageAction('left', 'edit', state)" [class.stretched]="!state?.leftPage?.src">
                 <i class="material-icons">edit</i>
               </div>
               <div class="image-action" (click)="onImageAction('left', 'delete', state)" *ngIf="state?.leftPage?.src">
@@ -59,9 +60,16 @@
       </div>
     </div>
     <div class="authoring-main">
-      <app-device-wrapper device="ipad landscape" [handlerId]="handlerId" class="zoomed-out">
-        <app-builder (stateChange)="onStateUpdated($event)" [handlerId]="handlerId"></app-builder>
-      </app-device-wrapper>
+      <div class="authoring-main-wrapper">
+        <div class="authoring-main-actions" (click)="publishPrototype()">
+          <div class="authoring-action">Publish</div>
+        </div>
+        <div class="authoring-main-holder">
+          <app-device-wrapper device="ipad landscape" [handlerId]="handlerId" class="zoomed-out">
+            <app-builder (stateChange)="onStateUpdated($event)" [handlerId]="handlerId"></app-builder>
+          </app-device-wrapper>
+        </div>
+      </div>
     </div>
   </div>
   <div class="photo-chooser" [hidden]="!showPhotoChooser">

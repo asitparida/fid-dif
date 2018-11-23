@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AppService } from '../app.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-preview',
@@ -16,7 +17,11 @@ export class PreviewComponent implements OnInit, AfterViewInit {
   ];
   selectedDevice = null;
   showFullWrapper = false;
-  constructor(private appService: AppService) {
+  configId;
+  config = null;
+  constructor(
+    private appService: AppService,
+    private activatedRoute: ActivatedRoute) {
   }
   ngOnInit() {
     this.selectedDevice = 'ipad';
@@ -24,6 +29,16 @@ export class PreviewComponent implements OnInit, AfterViewInit {
     if (!this.appService.isIpad()) {
       this.selectedDevice = 'ipad';
     }
+    this.activatedRoute.params.subscribe((data) => {
+      if (data && data.id) {
+        this.configId = data.id;
+        this.appService.getConfig(this.configId).subscribe((config: any) => {
+          if (config && config.Item) {
+            this.config = config.Item;
+          }
+        });
+      }
+    });
   }
   ngAfterViewInit() {
     if (this.showFullWrapper) {
