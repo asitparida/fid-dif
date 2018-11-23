@@ -3,12 +3,12 @@
     <div class="holder-item-wrapper">
       <div class="holder" *ngIf="config">
         <div class="holder-item" *ngIf="selectedDevice === 'macbook'">
-          <app-device-wrapper device="macbook" [handlerId]="handlerIdOne">
+          <app-device-wrapper device="macbook" [handlerId]="handlerIdOne" class="zoomed-out">
             <app-compare [config]="config" [handlerId]="handlerIdOne"></app-compare>
           </app-device-wrapper>
         </div>
         <div class="holder-item" *ngIf="selectedDevice === 'ipad'">
-          <app-device-wrapper device="ipad landscape" [handlerId]="handlerIdTwo">
+          <app-device-wrapper device="ipad landscape" [handlerId]="handlerIdTwo" class="zoomed-out">
             <app-compare [config]="config" [handlerId]="handlerIdTwo"></app-compare>
           </app-device-wrapper>
         </div>

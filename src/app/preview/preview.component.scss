@@ -10,7 +10,7 @@
     position: absolute;
     top:0 ;
     left: 0;
-    animation: fade-in 0.3s ease-out forwards 0s;
+    animation: fade-in 1s ease-out forwards 0s;
     transform-style: preserve-3d;
 }
 .holder {
@@ -121,14 +121,14 @@ button {
 @keyframes fade-in {
     0% {
         opacity: 0;
-        transform: scale3d(1, 1, 1);
+        // transform: scale3d(1, 1, 1);
     }
     10% {
         opacity: 0;
-            transform: scale3d(0.90, 0.90, 0.90);
+            // transform: scale3d(0.90, 0.90, 0.90);
     }
     100% {
         opacity: 1;
-        transform: scale3d(1, 1, 1);
+        // transform: scale3d(1, 1, 1);
     }
 }
