@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Input, AfterViewInit, Output,
 import { AppService } from '../app.service';
 import { BuilderService } from '../builder.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Dragger } from '../states';
 
 @Component({
   selector: 'app-builder',
@@ -16,6 +17,7 @@ export class BuilderComponent implements OnInit, AfterViewInit {
   @ViewChild('dragHandler') dragHandlerRef: ElementRef;
   @ViewChild('contentArea') contentAreaRef: ElementRef;
   @Input() handlerId;
+  @Input() draggerType: Dragger = Dragger.Horizontal;
   @Output() stateChange = new EventEmitter();
   mouseEventCapturing = false;
   panEventCapturing = false;
@@ -28,6 +30,8 @@ export class BuilderComponent implements OnInit, AfterViewInit {
   private rectProps: ClientRect;
   private left = 0;
   private right = 0;
+  private top = 0;
+  private bottom = 0;
   state: any = null;
 
   constructor(
@@ -147,14 +151,25 @@ export class BuilderComponent implements OnInit, AfterViewInit {
 
   initer() {
     this.rectProps = (this.wrapper as HTMLElement).getBoundingClientRect();
-    this.left = this.rectProps.left;
-    const width = this.rectProps.width;
-    this.right = this.rectProps.left + width;
-    const position = width * 0.50;
-    (this.handler as HTMLElement).style.left = `${position}px`;
-    (this.dragHandler as HTMLElement).style.left = `${position}px`;
-    (this.firstImageWrapper as HTMLElement).style.width = `${width * 0.5}px`;
-    (this.secondImageWrapper as HTMLElement).style.width = `${width * 0.5}px`;
+    if (this.draggerType === Dragger.Horizontal) {
+      this.left = this.rectProps.left;
+      const width = this.rectProps.width;
+      this.right = this.rectProps.left + width;
+      const position = width / 2;
+      (this.handler as HTMLElement).style.left = `${position}px`;
+      (this.dragHandler as HTMLElement).style.left = `${position}px`;
+      (this.firstImageWrapper as HTMLElement).style.width = `${width / 2}px`;
+      (this.secondImageWrapper as HTMLElement).style.width = `${width / 2}px`;
+    } else if (this.draggerType === Dragger.Vertical) {
+      this.top = this.rectProps.top;
+      const height = this.rectProps.height;
+      this.bottom = this.rectProps.left + height;
+      const position = height / 2;
+      (this.handler as HTMLElement).style.top = `${position}px`;
+      (this.dragHandler as HTMLElement).style.top = `${position}px`;
+      (this.firstImageWrapper as HTMLElement).style.height = `${position}px`;
+      (this.secondImageWrapper as HTMLElement).style.height = `${position}px`;
+    }
   }
 
   onWrapperClick() {
@@ -174,27 +189,45 @@ export class BuilderComponent implements OnInit, AfterViewInit {
   onMouseMove(e: MouseEvent) {
     if (this.mouseEventCapturing) {
       window.requestAnimationFrame(() => {
-        this.process(e.clientX);
+        this.process(e.clientX, e.clientY);
       });
     }
   }
 
-  process(eventCientX) {
-    let clientX = eventCientX;
-    clientX = clientX < this.left ? this.left : clientX;
-    clientX = clientX > this.rectProps.width ? this.rectProps.width : clientX;
-    let position = eventCientX - this.left;
-    position = position < 0 ? 0 : position;
-    position = position > this.rectProps.width ? this.rectProps.width : position;
-    (this.handler as HTMLElement).style.left = `${position}px`;
-    (this.dragHandler as HTMLElement).style.left = `${position}px`;
-    const firstImageWrapperWidth = position;
-    (this.firstImageWrapper as HTMLElement).style.width = `${firstImageWrapperWidth}px`;
-    position = this.right - eventCientX;
-    position = position < 0 ? 0 : position;
-    position = position > this.rectProps.width ? this.rectProps.width : position;
-    const secondImageWrapperWidth = position;
-    (this.secondImageWrapper as HTMLElement).style.width = `${secondImageWrapperWidth}px`;
+  process(eventClientX, eventClientY) {
+    if (this.draggerType === Dragger.Horizontal) {
+      let clientX = eventClientX;
+      clientX = clientX < this.left ? this.left : clientX;
+      clientX = clientX > this.rectProps.width ? this.rectProps.width : clientX;
+      let position = eventClientX - this.left;
+      position = position < 0 ? 0 : position;
+      position = position > this.rectProps.width ? this.rectProps.width : position;
+      (this.handler as HTMLElement).style.left = `${position}px`;
+      (this.dragHandler as HTMLElement).style.left = `${position}px`;
+      const firstImageWrapperWidth = position;
+      (this.firstImageWrapper as HTMLElement).style.width = `${firstImageWrapperWidth}px`;
+      position = this.right - eventClientX;
+      position = position < 0 ? 0 : position;
+      position = position > this.rectProps.width ? this.rectProps.width : position;
+      const secondImageWrapperWidth = position;
+      (this.secondImageWrapper as HTMLElement).style.width = `${secondImageWrapperWidth}px`;
+    } else if (this.draggerType === Dragger.Vertical) {
+      let clientY = eventClientY;
+      clientY = clientY < this.top ? this.top : clientY;
+      clientY = clientY > this.rectProps.height ? this.rectProps.height : clientY;
+      let position = eventClientY - this.top;
+      position = position < 0 ? 0 : position;
+      position = position > this.rectProps.height ? this.rectProps.height : position;
+      (this.handler as HTMLElement).style.top = `${position}px`;
+      (this.dragHandler as HTMLElement).style.top = `${position}px`;
+      const firstImageWrapperHeight = position;
+      (this.firstImageWrapper as HTMLElement).style.height = `${firstImageWrapperHeight}px`;
+      position = this.rectProps.bottom - eventClientY;
+      position = position < 0 ? 0 : position;
+      position = position > this.rectProps.height ? this.rectProps.height : position;
+      const secondImageWrapperHeight = position;
+      (this.secondImageWrapper as HTMLElement).style.height = `${secondImageWrapperHeight}px`;
+    }
   }
 
   onMouseOut() {
@@ -216,7 +249,7 @@ export class BuilderComponent implements OnInit, AfterViewInit {
   onPanMove(e) {
     if (this.panEventCapturing && !this.mouseEventCapturing) {
       window.requestAnimationFrame(() => {
-        this.process(e.center.x);
+        this.process(e.center.x, e.center.y);
       });
     }
   }

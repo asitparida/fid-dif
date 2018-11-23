@@ -2,18 +2,23 @@
   <div class="wrapper" #contentArea>
     <div class="image-wrapper-holder" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseOut()" (mousedown)="onMouseDown()" (panstart)="onPanStart()" (panend)="onPanEnd()" (panmove)="onPanMove($event)"
       (mouseup)="onMouseUp()" #wrapper>
-      <div class="image-wrapper first" #first>
+      <div class="image-wrapper first" #first [class.vertical]="draggerType === 'Vertical'" [class.horizontal]="draggerType === 'Horizontal'">
         <div class="image" [style.backgroundImage]="state?.leftPage?.url">
           <div class="image-marker" *ngFor="let marker of state?.leftPage?.markers" [class.active]="marker.active" (click)="onMarkActivate(marker)" [style.left]="marker.leftPosition " [style.top]="marker.topPosition " [style.width]="marker.widthPosition" [style.height]="marker.heightPosition"></div>
         </div>
       </div>
-      <div class="image-wrapper second" #second>
-        <div class="image" [style.backgroundImage]="state?.rightPage?.url">
-          <div class="image-marker" *ngFor="let marker of state?.rightPage?.markers"  [class.active]="marker.active" (click)="onMarkActivate(marker)" [style.right]="marker.rightPosition " [style.top]="marker.topPosition " [style.width]="marker.widthPosition" [style.height]="marker.heightPosition"></div>
+      <div class="image-wrapper second" #second [class.vertical]="draggerType === 'Vertical'" [class.horizontal]="draggerType === 'Horizontal'">
+        <div class="image" [style.backgroundImage]="state?.rightPage?.url" >
+          <ng-container *ngIf="draggerType === 'Horizontal'">
+              <div class="image-marker" *ngFor="let marker of state?.rightPage?.markers"  [class.active]="marker.active" (click)="onMarkActivate(marker)" [style.right]="marker.rightPosition " [style.top]="marker.topPosition " [style.width]="marker.widthPosition" [style.height]="marker.heightPosition"></div>
+          </ng-container>
+          <ng-container *ngIf="draggerType === 'Vertical'">
+              <div class="image-marker" *ngFor="let marker of state?.rightPage?.markers"  [class.active]="marker.active" (click)="onMarkActivate(marker)" [style.right]="marker.rightPosition " [style.bottom]="marker.bottomPosition " [style.width]="marker.widthPosition" [style.height]="marker.heightPosition"></div>
+          </ng-container>
         </div>
       </div>
-      <div class="image-slider" [class.active]="mouseEventCapturing" #handler></div>
-      <div class="pan-handler" #dragHandler>
+      <div class="image-slider" [class.vertical]="draggerType === 'Vertical'" [class.horizontal]="draggerType === 'Horizontal'" [class.active]="mouseEventCapturing" #handler></div>
+      <div class="pan-handler" #dragHandler [class.vertical]="draggerType === 'Vertical'" [class.horizontal]="draggerType === 'Horizontal'">
         <i class="material-icons">drag_indicator</i>
       </div>
     </div>

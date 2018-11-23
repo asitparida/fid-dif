@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { config } from 'rxjs';
+import { Dragger } from '../states';
 
 // tslint:disable component-selector
 
@@ -18,6 +19,7 @@ export class MarkerComponent implements OnInit, AfterViewInit {
   @Input() config;
   @Output() configChange = new EventEmitter();
   @Input() alignment = 'left';
+  @Input() draggerType: Dragger = Dragger.Horizontal;
   @Input() wrapperId = null;
   constructor() { }
 
@@ -38,11 +40,11 @@ export class MarkerComponent implements OnInit, AfterViewInit {
         const wrapper = document.getElementById(this.wrapperId);
         const dimensions: ClientRect = (wrapper as HTMLElement).getBoundingClientRect();
         const box = document.getElementById(this.boxId);
-        const topPosition = `${dimensions.height * (this.config.top / 100)}px`;
         const heightPosition = `${dimensions.height * (this.config.height / 100)}px`;
-        box.style.top = topPosition;
         box.style.height = heightPosition;
         if (this.alignment === 'left') {
+          const topPosition = `${dimensions.height * (this.config.top / 100)}px`;
+          box.style.top = topPosition;
           const leftPosition = `${dimensions.width * (this.config.left / 100)}px`;
           box.style.left = leftPosition;
           const widthPosition = `${dimensions.width * (this.config.width / 100)}px`;
@@ -55,6 +57,14 @@ export class MarkerComponent implements OnInit, AfterViewInit {
           const widthPosition = `${dimensions.width * (this.config.width / 100)}px`;
           box.style.width = widthPosition;
           delete box.style.left;
+          if (this.draggerType === Dragger.Horizontal) {
+            const topPosition = `${dimensions.height * (this.config.top / 100)}px`;
+            box.style.top = topPosition;
+          }
+          if (this.draggerType === Dragger.Vertical) {
+            const bottomPosition = `${dimensions.height * ((100 - this.config.top - this.config.height) / 100)}px`;
+            box.style.bottom = bottomPosition;
+          }
         }
       }
     }
@@ -94,8 +104,17 @@ export class MarkerComponent implements OnInit, AfterViewInit {
     };
 
     const startResizingForHandler = (e) => {
-      let height = e.clientY - wrapperProps.top - (this.boxProps.top - wrapperProps.top);
-      height = height < 48 ? 48 : height;
+      let height = 0;
+      if (this.draggerType === Dragger.Horizontal) {
+        height = e.clientY - wrapperProps.top - (this.boxProps.top - wrapperProps.top);
+        height = height < 48 ? 48 : height;
+      } else if (this.draggerType === Dragger.Vertical) {
+        // console.log(e.clientY);
+        // console.log(wrapperProps);
+        // console.log(this.boxProps);
+        // height = e.clientY - wrapperProps.top - (this.boxProps.top - wrapperProps.top);
+        // height = height < 48 ? 48 : height;
+      }
       box.style.height = height + 'px';
       if (this.alignment === 'left') {
         let width = e.clientX - wrapperProps.left - (this.boxProps.left - wrapperProps.left);
@@ -103,7 +122,7 @@ export class MarkerComponent implements OnInit, AfterViewInit {
         box.style.width = width + 'px';
       }
       if (this.alignment === 'right') {
-        let width = this.boxProps.right - e.clientX; // - (this.boxProps.left - wrapperProps.left);
+        let width = this.boxProps.right - e.clientX;
         width = width < 48 ? 48 : width;
         box.style.width = width + 'px';
       }

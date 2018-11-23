@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Input } from '@angular/core';
-import { BunBunConfig } from '../states';
+import { Dragger } from '../states';
 import { AppService } from '../app.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -18,6 +18,7 @@ export class CompareComponent implements AfterViewInit, OnInit {
   @ViewChild('dragHandler') dragHandlerRef: ElementRef;
   @ViewChild('contentArea') contentAreaRef: ElementRef;
   @Input() handlerId;
+  @Input() draggerType: Dragger = Dragger.Horizontal;
   mouseEventCapturing = false;
   panEventCapturing = false;
   private firstImageWrapper;
@@ -29,6 +30,8 @@ export class CompareComponent implements AfterViewInit, OnInit {
   private rectProps: ClientRect;
   private left = 0;
   private right = 0;
+  private top = 0;
+  private bottom = 0;
   configId;
   @Input() config;
   state: any = null;
@@ -79,16 +82,17 @@ export class CompareComponent implements AfterViewInit, OnInit {
     });
     const dimensions: ClientRect = (this.wrapper as HTMLElement).getBoundingClientRect();
     this.state.leftPage.markers.forEach(x => {
+      x.widthPosition = `${dimensions.width * (x.width / 100)}px`;
+      x.heightPosition = `${dimensions.height * (x.height / 100)}px`;
       x.leftPosition = `${dimensions.width * (x.left / 100)}px`;
       x.topPosition = `${dimensions.height * (x.top / 100)}px`;
-      x.widthPosition =  `${dimensions.width * (x.width / 100)}px`;
-      x.heightPosition =  `${dimensions.height * (x.height / 100)}px`;
     });
     this.state.rightPage.markers.forEach(x => {
       x.rightPosition = `${dimensions.width * ((100 - x.right) / 100)}px`;
+      x.widthPosition = `${dimensions.width * (x.width / 100)}px`;
+      x.heightPosition = `${dimensions.height * (x.height / 100)}px`;
       x.topPosition = `${dimensions.height * (x.top / 100)}px`;
-      x.widthPosition =  `${dimensions.width * (x.width / 100)}px`;
-      x.heightPosition =  `${dimensions.height * (x.height / 100)}px`;
+      x.bottomPosition = `${dimensions.height * ((100 - x.top - x.height) / 100)}px`;
     });
   }
 
@@ -129,14 +133,25 @@ export class CompareComponent implements AfterViewInit, OnInit {
 
   initer() {
     this.rectProps = (this.wrapper as HTMLElement).getBoundingClientRect();
-    this.left = this.rectProps.left;
-    const width = this.rectProps.width;
-    this.right = this.rectProps.left + width;
-    const position = width / 2;
-    (this.handler as HTMLElement).style.left = `${position}px`;
-    (this.dragHandler as HTMLElement).style.left = `${position}px`;
-    (this.firstImageWrapper as HTMLElement).style.width = `${width / 2}px`;
-    (this.secondImageWrapper as HTMLElement).style.width = `${width / 2}px`;
+    if (this.draggerType === Dragger.Horizontal) {
+      this.left = this.rectProps.left;
+      const width = this.rectProps.width;
+      this.right = this.rectProps.left + width;
+      const position = width / 2;
+      (this.handler as HTMLElement).style.left = `${position}px`;
+      (this.dragHandler as HTMLElement).style.left = `${position}px`;
+      (this.firstImageWrapper as HTMLElement).style.width = `${width / 2}px`;
+      (this.secondImageWrapper as HTMLElement).style.width = `${width / 2}px`;
+    } else if (this.draggerType === Dragger.Vertical) {
+      this.top = this.rectProps.top;
+      const height = this.rectProps.height;
+      this.bottom = this.rectProps.left + height;
+      const position = height / 2;
+      (this.handler as HTMLElement).style.top = `${position}px`;
+      (this.dragHandler as HTMLElement).style.top = `${position}px`;
+      (this.firstImageWrapper as HTMLElement).style.height = `${position}px`;
+      (this.secondImageWrapper as HTMLElement).style.height = `${position}px`;
+    }
   }
 
   onWrapperClick() {
@@ -154,7 +169,7 @@ export class CompareComponent implements AfterViewInit, OnInit {
   }
 
   onMarkActivate(marker) {
-    const state = BunBunConfig.config.find(x => x.state === marker.targetState);
+    const state = this.config.config.find(x => x.state === marker.targetState);
     if (state) {
       this.state = null;
       let elem = (this.secondImageWrapper as Element).querySelector('.image');
@@ -178,27 +193,45 @@ export class CompareComponent implements AfterViewInit, OnInit {
   onMouseMove(e: MouseEvent) {
     if (this.mouseEventCapturing) {
       window.requestAnimationFrame(() => {
-        this.process(e.clientX);
+        this.process(e.clientX, e.clientY);
       });
     }
   }
 
-  process(eventCientX) {
-    let clientX = eventCientX;
-    clientX = clientX < this.left ? this.left : clientX;
-    clientX = clientX > this.rectProps.width ? this.rectProps.width : clientX;
-    let position = eventCientX - this.left;
-    position = position < 0 ? 0 : position;
-    position = position > this.rectProps.width ? this.rectProps.width : position;
-    (this.handler as HTMLElement).style.left = `${position}px`;
-    (this.dragHandler as HTMLElement).style.left = `${position}px`;
-    const firstImageWrapperWidth = position;
-    (this.firstImageWrapper as HTMLElement).style.width = `${firstImageWrapperWidth}px`;
-    position = this.right - eventCientX;
-    position = position < 0 ? 0 : position;
-    position = position > this.rectProps.width ? this.rectProps.width : position;
-    const secondImageWrapperWidth = position;
-    (this.secondImageWrapper as HTMLElement).style.width = `${secondImageWrapperWidth}px`;
+  process(eventClientX, eventClientY) {
+    if (this.draggerType === Dragger.Horizontal) {
+      let clientX = eventClientX;
+      clientX = clientX < this.left ? this.left : clientX;
+      clientX = clientX > this.rectProps.width ? this.rectProps.width : clientX;
+      let position = eventClientX - this.left;
+      position = position < 0 ? 0 : position;
+      position = position > this.rectProps.width ? this.rectProps.width : position;
+      (this.handler as HTMLElement).style.left = `${position}px`;
+      (this.dragHandler as HTMLElement).style.left = `${position}px`;
+      const firstImageWrapperWidth = position;
+      (this.firstImageWrapper as HTMLElement).style.width = `${firstImageWrapperWidth}px`;
+      position = this.right - eventClientX;
+      position = position < 0 ? 0 : position;
+      position = position > this.rectProps.width ? this.rectProps.width : position;
+      const secondImageWrapperWidth = position;
+      (this.secondImageWrapper as HTMLElement).style.width = `${secondImageWrapperWidth}px`;
+    } else if (this.draggerType === Dragger.Vertical) {
+      let clientY = eventClientY;
+      clientY = clientY < this.top ? this.top : clientY;
+      clientY = clientY > this.rectProps.height ? this.rectProps.height : clientY;
+      let position = eventClientY - this.top;
+      position = position < 0 ? 0 : position;
+      position = position > this.rectProps.height ? this.rectProps.height : position;
+      (this.handler as HTMLElement).style.top = `${position}px`;
+      (this.dragHandler as HTMLElement).style.top = `${position}px`;
+      const firstImageWrapperHeight = position;
+      (this.firstImageWrapper as HTMLElement).style.height = `${firstImageWrapperHeight}px`;
+      position = this.rectProps.bottom - eventClientY;
+      position = position < 0 ? 0 : position;
+      position = position > this.rectProps.height ? this.rectProps.height : position;
+      const secondImageWrapperHeight = position;
+      (this.secondImageWrapper as HTMLElement).style.height = `${secondImageWrapperHeight}px`;
+    }
   }
 
   onMouseOut() {
@@ -216,7 +249,7 @@ export class CompareComponent implements AfterViewInit, OnInit {
   onPanMove(e) {
     if (this.panEventCapturing && !this.mouseEventCapturing) {
       window.requestAnimationFrame(() => {
-        this.process(e.center.x);
+        this.process(e.center.x, e.center.y);
       });
     }
   }
