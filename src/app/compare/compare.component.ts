@@ -42,6 +42,7 @@ export class CompareComponent implements AfterViewInit, OnInit {
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    console.log(this.config);
     this.state = this.config.config[0];
   }
   loadImages() {

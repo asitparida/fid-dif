@@ -43,6 +43,7 @@ export class BuilderComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.loadMarkers();
     this.builderService.state$.subscribe((data) => {
+      console.log(data);
       this.loadState(data);
     });
   }

@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AppService } from '../app.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Dragger } from '../states';
 
 @Component({
   selector: 'app-preview',
@@ -15,13 +16,19 @@ export class PreviewComponent implements OnInit, AfterViewInit {
     'macbook',
     'ipad'
   ];
+  dragTypes = [
+    Dragger.Horizontal,
+    Dragger.Vertical
+  ];
+  selectedDragType = Dragger.Horizontal;
   selectedDevice = null;
   showFullWrapper = false;
   configId;
   config = null;
   constructor(
     private appService: AppService,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private router: Router) {
   }
   ngOnInit() {
     this.selectedDevice = 'ipad';
@@ -33,6 +40,7 @@ export class PreviewComponent implements OnInit, AfterViewInit {
       if (data && data.id) {
         this.configId = data.id;
         this.appService.getConfig(this.configId).subscribe((config: any) => {
+          console.log(config);
           if (config && config.Item) {
             this.config = config.Item;
           }
@@ -46,6 +54,9 @@ export class PreviewComponent implements OnInit, AfterViewInit {
     } else {
       document.body.classList.remove('dark-bg');
     }
+  }
+  editPrototype() {
+    this.router.navigate([`/authoring/${this.configId}`]);
   }
   toggleSkin() {
     if (this.selectedDevice === 'macbook') {

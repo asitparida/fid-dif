@@ -3,7 +3,8 @@ import { BuilderService } from '../builder.service';
 import { GUID } from 'src/helpers';
 import { AppService } from '../app.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SampleConfig } from '../states';
 declare var AWS: any;
 
 @Component({
@@ -17,28 +18,49 @@ export class AuthoringComponent implements OnInit {
     activeIndex = 0;
     editing = {};
     config: any;
-    configId = '5e91671d-21e1-f2ee-d00c-750421a30c01';
+    configId = null;
     folderOptions = [];
     showPhotoChooser = false;
+    showPublishResult = false;
     editingState = '';
     editingType = '';
+    previewConfigId = null;
     constructor(
         private builderService: BuilderService,
         private appService: AppService,
         private sanitizer: DomSanitizer,
-        private router: Router
+        private router: Router,
+        private activatedRouter: ActivatedRoute
     ) { }
     ngOnInit() {
-        this.appService.getConfig(this.configId).subscribe((data: any) => {
-            if (data && data.Item) {
-                this.config = data.Item;
-                const config = this.config.config;
-                config.forEach(x => {
-                    x.leftPage.imgSrc = this.sanitizer.bypassSecurityTrustStyle(`url('${x.leftPage.src}')`);
-                    x.rightPage.imgSrc = this.sanitizer.bypassSecurityTrustStyle(`url('${x.rightPage.src}')`);
-                    this.fidelityStates.push(x);
+        this.activatedRouter.params.subscribe((params) => {
+            if (params && params['id']) {
+                this.configId = params['id'];
+            }
+            if (this.configId) {
+                this.appService.getConfig(this.configId).subscribe((data: any) => {
+                    if (data && data.Item) {
+                        this.config = data.Item;
+                        const config = this.config.config;
+                        config.forEach(x => {
+                            x.leftPage.imgSrc = this.sanitizer.bypassSecurityTrustStyle(`url('${x.leftPage.src}')`);
+                            x.rightPage.imgSrc = this.sanitizer.bypassSecurityTrustStyle(`url('${x.rightPage.src}')`);
+                            this.fidelityStates.push(x);
+                        });
+                        this.builderService.state.next(this.fidelityStates[this.activeIndex]);
+                    }
                 });
-                this.builderService.state.next(this.fidelityStates[this.activeIndex]);
+            } else {
+                setTimeout(() => {
+                    this.config = SampleConfig.config;
+                    const config = SampleConfig.config;
+                    config.forEach((x: any) => {
+                        x.leftPage.imgSrc = this.sanitizer.bypassSecurityTrustStyle(`url('${x.leftPage.src}')`);
+                        x.rightPage.imgSrc = this.sanitizer.bypassSecurityTrustStyle(`url('${x.rightPage.src}')`);
+                        this.fidelityStates.push(x);
+                    });
+                    this.builderService.state.next(this.fidelityStates[this.activeIndex]);
+                });
             }
         });
         this.builderService.getFolders().subscribe((data: any) => {
@@ -60,7 +82,7 @@ export class AuthoringComponent implements OnInit {
                 this.folderOptions.forEach((x, i) => {
                     x.active = i === 0;
                 });
-            }, 3000);
+            }, 1000);
         });
     }
     onStateUpdated($event) {
@@ -100,7 +122,9 @@ export class AuthoringComponent implements OnInit {
 
     saveConfig() {
         const obj = Object.assign({}, this.config, {
-            config: this.fidelityStates
+            config: this.fidelityStates,
+            id: GUID(),
+            preview: true
         });
         if (obj && obj.config && obj.config.leftPage) {
             delete obj.config.leftPage.url;
@@ -111,7 +135,6 @@ export class AuthoringComponent implements OnInit {
             delete obj.config.rightPage.imgSrc;
         }
         this.appService.saveConfig(obj).subscribe((data) => {
-            console.log(obj);
         });
     }
 
@@ -119,6 +142,10 @@ export class AuthoringComponent implements OnInit {
         this.folderOptions.forEach(x => {
             x.active = x.folderName === option.folderName;
         });
+    }
+
+    seePreview() {
+        this.router.navigate([`/preview/${this.previewConfigId}`]);
     }
 
     choosePhoto(file) {
@@ -165,7 +192,24 @@ export class AuthoringComponent implements OnInit {
     }
 
     publishPrototype() {
-        this.router.navigate([`/preview/${this.configId}`]);
+        const obj = Object.assign({}, this.config, {
+            config: this.fidelityStates,
+            id: GUID(),
+            preview: true
+        });
+        if (obj && obj.config && obj.config.leftPage) {
+            delete obj.config.leftPage.url;
+            delete obj.config.leftPage.imgSrc;
+        }
+        if (obj && obj.config && obj.config.rightPage) {
+            delete obj.config.rightPage.url;
+            delete obj.config.rightPage.imgSrc;
+        }
+        this.appService.saveConfig(obj).subscribe((data) => {
+            this.previewConfigId = obj.id;
+            this.showPublishResult = true;
+        });
+        // this.router.navigate([`/preview/${this.configId}`]);
     }
 
     deleteState(state) {

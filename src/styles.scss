@@ -26,3 +26,24 @@ body {
       display: table;
       clear: both;
   }
+
+  .authoring-action {
+    border: 2px solid rgba(#333, 1);
+    color: rgba(#333, 1);
+    border-radius: 20px;
+    height: 36px;;
+    line-height: 32px;
+    padding: 0 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: small;
+    min-width: 100px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    background: transparent;
+    &:hover {
+        background: rgba(#333, 1);
+        color: #fff;
+    }
+}

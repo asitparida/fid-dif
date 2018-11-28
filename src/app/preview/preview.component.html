@@ -2,6 +2,7 @@
   <ng-container *ngIf="!showFullWrapper">
     <div class="holder-item-wrapper">
       <div class="holder" *ngIf="config">
+        <button class="authoring-action" (click)="editPrototype()">Edit Prototype</button>
         <div class="holder-item" *ngIf="selectedDevice === 'macbook'">
           <app-device-wrapper device="macbook" [handlerId]="handlerIdOne" class="zoomed-out">
             <app-compare [config]="config" [handlerId]="handlerIdOne"></app-compare>
@@ -14,18 +15,18 @@
         </div>
         <div class="holder-type-toggler">
           <div class="holder-type" [class.active]="selectedDevice === 'macbook'" (click)="selectedDevice = 'macbook'">
-            <i class="material-icons">laptop</i>
+            <i class="material-icons">laptop_chromebook</i>
           </div>
           <div class="holder-type" [class.active]="selectedDevice === 'ipad'" (click)="selectedDevice = 'ipad'">
-              <i class="material-icons">tablet</i>
-            </div>
+            <i class="material-icons">tablet</i>
+          </div>
         </div>
       </div>
     </div>
   </ng-container>
   <div class="full-wrapper" *ngIf="showFullWrapper">
-    <div class="full-wrapper-content">
-      <app-compare [handlerId]="handlerIdTwo"></app-compare>
+    <div class="full-wrapper-content" *ngIf="config">
+      <app-compare [config]="config" [handlerId]="handlerIdTwo"></app-compare>
     </div>
   </div>
 </div>

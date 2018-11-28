@@ -1,9 +1,12 @@
+
 :host {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 .image-wrapper-outer {
     display: flex;
