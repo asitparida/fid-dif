@@ -1,4 +1,5 @@
 <div class="box" [attr.id]="boxId">
+    <div class="index" [ngClass]="alignment">{{index + 1}}</div>
     <div class="mover" [attr.id]="moverId"></div>
     <div class="handle" [attr.id]="handleId" [ngClass]="alignment"></div>
 </div>

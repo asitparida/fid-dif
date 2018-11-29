@@ -16,6 +16,7 @@ export class MarkerComponent implements OnInit, AfterViewInit {
   moverId = 'mover_' + Math.floor(Math.random() * 10e6);
   boxProps: ClientRect;
   initialBoxProps: ClientRect;
+  @Input() index = 0;
   @Input() config;
   @Output() configChange = new EventEmitter();
   @Input() alignment = 'left';

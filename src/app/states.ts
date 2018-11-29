@@ -21,6 +21,7 @@ export const BunBunConfig = {
 
 export const SampleConfig = {
     'id': null,
+    title: 'Prototype Title',
     config: [
         {
             state: 'STATE', "rightPage": {

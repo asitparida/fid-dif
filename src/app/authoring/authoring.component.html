@@ -1,9 +1,11 @@
 <div class="authoring-view">
   <div class="authoring-container">
     <div class="authoring-items-wrapper">
+      <label class="configure">Configuration</label>
       <div class="authoring-items-header">
-        <input class="action-input" *ngIf="config" [(ngModel)]="config.title" placeholder="Add a title for the state" name="configTitle" />
-        <div class="action" (click)="addState()">
+        <input class="action-input" *ngIf="config" [(ngModel)]="config.title" placeholder="Add a title for the prototype"
+          name="configTitle" />
+        <div class="action" (click)="addState()" title="Add Page">
           <i class="material-icons">add_box</i>
         </div>
         <div class="action" (click)="saveConfig()">
@@ -16,12 +18,12 @@
       <div class="authoring-items-holder">
         <div class="authoring-image-item" *ngFor="let state of fidelityStates; let i = index" (click)="activateState(i)"
           [class.active]="activeIndex === i">
+          <div class="title">Page {{i + 1}}</div>
           <div class="active-index">
-              State {{i + 1}}
-              <i class="material-icons" (click)="deleteState(state)">delete</i>
+            <i class="material-icons" (click)="deleteState(state)">delete</i>
           </div>
           <div class="state-details">
-            <label class="state-label">Title</label>
+            <label class="state-label reducedGap">Title</label>
             <input [(ngModel)]="state.title" placeholder="Add a title for the state" [name]="'name' + i" />
           </div>
           <div class="left">
@@ -36,6 +38,7 @@
             </div>
             <label class="state-label" style="margin-top: 15px">Left Hotspots</label>
             <div class="marker" *ngFor="let marker of state?.leftPage?.markers; let i = index">
+              <span>{{i+1}}.</span>
               <select [(ngModel)]="marker.targetState" [name]="'ls_' + i" [attr.id]="'lsid_' + i">
                 <option *ngFor="let target of fidelityStates" [value]="target.state">{{target.title}}</option>
               </select>
@@ -56,6 +59,7 @@
             </div>
             <label class="state-label" style="margin-top: 15px">Right Hotspots</label>
             <div class="marker" *ngFor="let marker of state?.rightPage?.markers; let i = index">
+              <span>{{i+1}}.</span>
               <select [(ngModel)]="marker.targetState" [name]="'rs_' + i" [attr.id]="'rsid_' + i">
                 <option *ngFor="let target of fidelityStates" [value]="target.state">{{target.title}}</option>
               </select>
@@ -65,6 +69,9 @@
             <button class="add-marker" (click)="addMarker(state, 'right')"><i class="material-icons">add</i>Add Hotspot</button>
           </div>
           <div class="clearfix"></div>
+        </div>
+        <div class="centered">
+          <button class="pane-button" (click)="addState()"> <i class="material-icons">add</i> Add Page</button>
         </div>
       </div>
     </div>
@@ -109,6 +116,33 @@
       <div class="publish-result">
         <label>Your prototype has been published</label>
         <button (click)="seePreview()">See Preview</button>
+      </div>
+    </div>
+  </div>
+  <div class="photo-chooser" [hidden]="!showHelpInfo">
+    <div class="photo-chooser-overlay darker"></div>
+    <div class="photo-chooser-details-wrapper">
+      <div class="help-info">
+        <div class="closer" (click)="showHelpInfo = false">
+          <i class="material-icons">close</i>
+        </div>
+        <label class="title">Building a prototype </label>
+        <div class="help-item">
+          <label><span>Step</span> 01</label>
+          <p>Add a page and give it a name</p>
+        </div>
+        <div class="help-item">
+          <label><span>Step</span> 02</label>
+          <p>Choose images for left screen right screen</p>
+        </div>
+        <div class="help-item">
+          <label><span>Step</span> 03</label>
+          <p>Add markers for each screens and configure them</p>
+        </div>
+        <div class="help-item">
+          <label><span>Step</span> 04</label>
+          <p>Publish your prototype</p>
+        </div>
       </div>
     </div>
   </div>

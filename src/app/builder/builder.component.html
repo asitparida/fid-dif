@@ -4,13 +4,13 @@
       (panstart)="onPanStart()" (panend)="onPanEnd()" (panmove)="onPanMove($event)" (mouseup)="onMouseUp()" #wrapper>
       <div class="image-wrapper first" #first [class.vertical]="draggerType === 'Vertical'" [class.horizontal]="draggerType === 'Horizontal'">
         <div class="image" [style.backgroundImage]="state?.leftPage?.url">
-          <marker [draggerType]="draggerType" [wrapperId]="handlerId" *ngFor="let marker of state?.leftPage?.markers; let i = index"
+          <marker [index]="i" [draggerType]="draggerType" [wrapperId]="handlerId" *ngFor="let marker of state?.leftPage?.markers; let i = index"
             alignment="left" [config]="marker" (configChange)="onConfigChange($event, i, 'left')"></marker>
         </div>
       </div>
       <div class="image-wrapper second" #second [class.vertical]="draggerType === 'Vertical'" [class.horizontal]="draggerType === 'Horizontal'">
         <div class="image" [style.backgroundImage]="state?.rightPage?.url">
-          <marker [draggerType]="draggerType" [wrapperId]="handlerId" *ngFor="let marker of state?.rightPage?.markers; let i = index"
+          <marker [index]="i" [draggerType]="draggerType" [wrapperId]="handlerId" *ngFor="let marker of state?.rightPage?.markers; let i = index"
             alignment="right" [config]="marker" (configChange)="onConfigChange($event, i, 'right')"></marker>
         </div>
       </div>

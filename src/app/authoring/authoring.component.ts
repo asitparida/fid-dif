@@ -22,6 +22,7 @@ export class AuthoringComponent implements OnInit {
     folderOptions = [];
     showPhotoChooser = false;
     showPublishResult = false;
+    showHelpInfo = true;
     editingState = '';
     editingType = '';
     previewConfigId = null;
@@ -52,7 +53,7 @@ export class AuthoringComponent implements OnInit {
                 });
             } else {
                 setTimeout(() => {
-                    this.config = SampleConfig.config;
+                    this.config = SampleConfig;
                     const config = SampleConfig.config;
                     config.forEach((x: any) => {
                         x.leftPage.imgSrc = this.sanitizer.bypassSecurityTrustStyle(`url('${x.leftPage.src}')`);
@@ -164,6 +165,7 @@ export class AuthoringComponent implements OnInit {
         this.editingState = null;
         this.editingType = null;
         this.showPhotoChooser = false;
+        this.builderService.state.next(this.fidelityStates[this.activeIndex]);
     }
 
     closePhotoChooser() {
