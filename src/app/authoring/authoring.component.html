@@ -79,6 +79,7 @@
       <div class="authoring-main-wrapper">
         <div class="authoring-main-actions">
           <div class="authoring-action" (click)="publishPrototype()">Publish</div>
+          <div class="authoring-action" (click)="showHelpInfo = true;">Help</div>
         </div>
         <div class="authoring-main-holder">
           <app-device-wrapper device="ipad landscape" [handlerId]="handlerId" class="zoomed-out">
@@ -133,11 +134,11 @@
         </div>
         <div class="help-item">
           <label><span>Step</span> 02</label>
-          <p>Choose images for left screen right screen</p>
+          <p>Choose images for left and right screen</p>
         </div>
         <div class="help-item">
           <label><span>Step</span> 03</label>
-          <p>Add markers for each screens and configure them</p>
+          <p>Add hotspots for each screens and configure them</p>
         </div>
         <div class="help-item">
           <label><span>Step</span> 04</label>
